@@ -14,7 +14,7 @@ class CreateAccountScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 50.0), // Add spacing at the top
+              const SizedBox(height: 50.0), // Add spacing at the top
               const Text(
                 'Create an Account',
                 style: TextStyle(
@@ -22,7 +22,7 @@ class CreateAccountScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               CustomLabeledInput(
                 label: 'Bank Verification Number',
                 title: 'BVN',
@@ -62,7 +62,7 @@ class CreateAccountScreen extends StatelessWidget {
                 prefixIcon: Icons.lock,
                 obscureText: true,
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               SizedBox(
                 width: double.infinity,
                 height: 45,
@@ -88,7 +88,7 @@ class CreateAccountScreen extends StatelessWidget {
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
-                    side: MaterialStateProperty.all(BorderSide(color: AppColors.signInButtonBorderColor)),
+                    side: MaterialStateProperty.all(const BorderSide(color: AppColors.signInButtonBorderColor)),
                   ),
                   child: const Text(
                     'Sign In',
@@ -129,7 +129,7 @@ class CustomLabeledInput extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
@@ -147,7 +147,7 @@ class CustomLabeledInput extends StatelessWidget {
             obscureText: obscureText,
           ),
         ),
-        SizedBox(height: 16.0),
+        const SizedBox(height: 16.0),
       ],
     );
   }
