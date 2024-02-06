@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:primus_suites/common/widgets/colors.dart';
-import 'package:primus_suites/common/widgets/textstyles.dart';
 
 class MyHomePage extends StatelessWidget {
   @override
@@ -13,10 +12,10 @@ class MyHomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 40.0,),
+              SizedBox(height: 40.0,),
               const Text(
                 'Hello, Username', // Replace "Username" with the actual username
-                style: AppText.mainText,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               const Row(
@@ -25,11 +24,11 @@ class MyHomePage extends StatelessWidget {
                   SizedBox(width: 10),
                   Text(
                     'Add New Account',
-                    style: AppText.smallBoldText,
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
-              const SizedBox(height: 5),
+              SizedBox(height: 5),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -40,7 +39,7 @@ class MyHomePage extends StatelessWidget {
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(AppColors.primaryColor)
                     ),
-                    child: const Text('Savings Account'),
+                    child: Text('Savings Account'),
                   ),
                   const SizedBox(width: 10),
                   ElevatedButton(
@@ -49,7 +48,7 @@ class MyHomePage extends StatelessWidget {
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
-                      side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
+                      side: MaterialStateProperty.all(BorderSide(color: Colors.black)),
                     ),
                     child: const Text('Current Account', style: TextStyle(
                       color: Colors.black,
@@ -89,13 +88,13 @@ class MyHomePage extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.visibility),
+                          icon: Icon(Icons.visibility),
                           onPressed: () {
                           },
                         ),
                       ],
                     ),
-                   const SizedBox(height: 10,),
+                   SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -105,9 +104,9 @@ class MyHomePage extends StatelessWidget {
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
-                            side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
+                            side: MaterialStateProperty.all(BorderSide(color: Colors.black)),
                           ),
-                          child: const Text('Send Money', style: TextStyle(
+                          child: Text('Send Money', style: TextStyle(
                             color: Colors.black,
                           ),),
                         ),
@@ -117,7 +116,7 @@ class MyHomePage extends StatelessWidget {
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
-                            side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
+                            side: MaterialStateProperty.all(BorderSide(color: Colors.black)),
                           ),
                           child: const Text('Receive Money', style: TextStyle(
                             color: Colors.black
@@ -129,7 +128,7 @@ class MyHomePage extends StatelessWidget {
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
-                            side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
+                            side: MaterialStateProperty.all(BorderSide(color: Colors.black)),
                           ),
                           child: const Text('Loan Money', style: TextStyle(
                             color: Colors.black,
@@ -146,7 +145,7 @@ class MyHomePage extends StatelessWidget {
                fontWeight: FontWeight.w500,
               )
               ),
-              const SizedBox(height:10.0,),
+              SizedBox(height:10.0,),
               Container(
                 height: 100,
                 width: 500,
@@ -185,15 +184,15 @@ class MyHomePage extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 15.0,),
+              SizedBox(height: 15.0,),
               Container(
                 height: 200,
                 width: 500,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: CupertinoColors.systemGrey5,
                 ),
                 child: ListView(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.0),
                   children: [
                     _buildTransactionItem(Icons.arrow_downward, 'Account Deposit', '2024-02-01 10:30 AM', 'View Receipt','\$500.00', Colors.green, ),
                     _buildTransactionItem(Icons.arrow_upward, 'Payment', '2024-02-02 03:45 PM', 'View Receipt','\$200.00', Colors.red ,),
@@ -232,10 +231,10 @@ Widget _buildCircleButton(Color outerColor, Color innerColor, String label) {
           ),
         ),
       ),
-      const SizedBox(height: 5),
+      SizedBox(height: 5),
       Text(
         label,
-        style: const TextStyle(fontSize: 10, fontFamily: 'Inter', fontWeight: FontWeight.w400),
+        style: TextStyle(fontSize: 10, fontFamily: 'Inter', fontWeight: FontWeight.w400),
       ),
     ],
   );
@@ -243,23 +242,23 @@ Widget _buildCircleButton(Color outerColor, Color innerColor, String label) {
 
 Widget _buildTransactionItem(IconData icon, String title, String timestamp, String type, String amount, Color iconColor) {
   return Container(
-    margin: const EdgeInsets.symmetric(vertical: 8.0),
+    margin: EdgeInsets.symmetric(vertical: 8.0),
     child: Row(
       children: [
         Icon(icon, color: iconColor),
-        const SizedBox(width: 16.0),
+        SizedBox(width: 16.0),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 title,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 5.0),
+              SizedBox(height: 5.0),
               Text(
                 timestamp,
-                style: AppText.smallItalicText,
+                style: TextStyle(fontSize: 12, color: Colors.grey),
               ),
             ],
           ),
@@ -267,14 +266,14 @@ Widget _buildTransactionItem(IconData icon, String title, String timestamp, Stri
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            const SizedBox(height: 4.0),
+            SizedBox(height: 4.0),
             Text(
               amount,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             Text(
               type,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.red),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.red),
             ),
           ],
         ),

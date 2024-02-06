@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:primus_suites/features/Home%20Scree/views/buyairtime.dart';
+import 'package:primus_suites/features/Home%20Scree/views/dashboard.dart';
 import 'package:primus_suites/features/Home%20Scree/views/receivemoney.dart';
-//import 'package:primus_suites/features/Home%20Scree/views/dashboard.dart';
-//import 'package:primus_suites/features/Home%20Scree/views/receivemoney.dart';
-//import 'package:primus_suites/features/Home%20Scree/views/sendmoney.dart';
-//import 'package:primus_suites/features/Onoarding/welcome.dart';
-//import 'package:primus_suites/features/authentication/views/signin.dart';
-//import 'package:primus_suites/features/authentication/views/signup.dart';
+import 'package:primus_suites/features/Home%20Scree/views/sendmoney.dart';
+import 'package:primus_suites/features/Onoarding/welcome.dart';
+import 'package:primus_suites/features/authentication/views/signin.dart';
+import 'package:primus_suites/features/authentication/views/signup.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,9 +16,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
 
-      home: BuyAirtime(),
+      home: SendMoney(),
 
     );
   }

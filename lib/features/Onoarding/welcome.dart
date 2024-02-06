@@ -9,9 +9,9 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const SizedBox(height: 60.0,),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
+          SizedBox(height: 60.0,),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Text('Lorem ipsum dolor sit amet consectetur, Amet nibh ',
             style: TextStyle(
               color: AppColors.primaryColor,
@@ -21,9 +21,9 @@ class WelcomeScreen extends StatelessWidget {
             ),
             ),
           ),
-          const SizedBox(height: 50,),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
+          SizedBox(height: 50,),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Text('Lorem ipsum dolor sit amet consectetur. Diam vivamus mattis pulvin',
             style: TextStyle(
               fontSize: 16,
@@ -31,7 +31,7 @@ class WelcomeScreen extends StatelessWidget {
               fontFamily: 'Inter',
             ),),
           ),
-          const SizedBox(height: 250.0),
+          SizedBox(height: 250.0),
           SizedBox(
             width: 500,
             height: 60,
@@ -62,7 +62,7 @@ class WelcomeScreen extends StatelessWidget {
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
-                  side: MaterialStateProperty.all(const BorderSide(color: AppColors.signInButtonBorderColor)),
+                  side: MaterialStateProperty.all(BorderSide(color: AppColors.signInButtonBorderColor)),
                 ),
                 child: const Text(
                   'Sign In',
