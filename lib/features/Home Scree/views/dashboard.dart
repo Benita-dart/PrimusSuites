@@ -2,10 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:primus_suites/common/widgets/colors.dart';
 import 'package:primus_suites/common/widgets/textstyles.dart';
+import 'package:primus_suites/features/Home%20Scree/views/buyairtime.dart';
+import 'package:primus_suites/features/Home%20Scree/views/receivemoney.dart';
+import 'package:primus_suites/features/Home%20Scree/views/sendmoney.dart';
 
 class MyHomePage extends StatelessWidget {
+  final String username;
+
+  MyHomePage({required this.username});
+
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -14,8 +23,8 @@ class MyHomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 40.0,),
-              const Text(
-                'Hello, Username', // Replace "Username" with the actual username
+              Text(
+                'Hello, $username', // Replace "Username" with the actual username
                 style: AppText.mainText,
               ),
               const SizedBox(height: 20),
@@ -38,7 +47,7 @@ class MyHomePage extends StatelessWidget {
                       // Add functionality for Savings Account button
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(AppColors.primaryColor)
+                        backgroundColor: MaterialStateProperty.all(AppColors.primaryColor)
                     ),
                     child: const Text('Savings Account'),
                   ),
@@ -59,11 +68,11 @@ class MyHomePage extends StatelessWidget {
               ),
               const SizedBox(height: 10,),
               Container(
-                height: 150,
-                width: 500,
+                height: size.height * 0.2, // 20% of screen height
+                width: size.width * 0.9, // 90% of screen width
                 decoration: BoxDecoration(
-                  color: CupertinoColors.systemGrey5,
-                  borderRadius: BorderRadius.circular(10.0)
+                    color: CupertinoColors.systemGrey5,
+                    borderRadius: BorderRadius.circular(10.0)
                 ),
                 child:  Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +92,7 @@ class MyHomePage extends StatelessWidget {
                           child: Text(
                             '₦346,000',
                             style: TextStyle(fontSize: 32,
-                            fontFamily: 'Inter',
+                              fontFamily: 'Inter',
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -95,13 +104,16 @@ class MyHomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                   const SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         OutlinedButton(
                           onPressed: () {
-                            // Add functionality for Send Money button
+                            Navigator.push(context,
+                                MaterialPageRoute(
+                                    builder: (context) => const SendMoney()
+                                ));
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
@@ -113,25 +125,31 @@ class MyHomePage extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            // Add functionality for Receive Money button
+                            Navigator.push(context,
+                                MaterialPageRoute(
+                                    builder: (context) => const ReceiveMoney()
+                                ));
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
                             side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
                           ),
                           child: const Text('Receive Money', style: TextStyle(
-                            color: Colors.black
+                              color: Colors.black
                           ),),
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            // Add functionality for Loan Money button
+                            Navigator.push(context,
+                                MaterialPageRoute(
+                                    builder: (context) => const BuyAirtime()
+                                ));
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
                             side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
                           ),
-                          child: const Text('Loan Money', style: TextStyle(
+                          child: const Text('Bill Payment', style: TextStyle(
                             color: Colors.black,
                           ),),
                         ),
@@ -142,14 +160,14 @@ class MyHomePage extends StatelessWidget {
               ),
               const SizedBox(height: 16.0,),
               const Text('Quick links', style:TextStyle(
-               fontSize: 18,
-               fontWeight: FontWeight.w500,
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
               )
               ),
               const SizedBox(height:10.0,),
               Container(
-                height: 100,
-                width: 500,
+                height: size.height * 0.1, // 10% of screen height
+                width: size.width * 0.9, // 90% of screen width
                 decoration: BoxDecoration(
                     color: CupertinoColors.systemGrey5,
                     borderRadius: BorderRadius.circular(10.0)
@@ -170,11 +188,11 @@ class MyHomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Recent Transactions',
-                  style: TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'Inter',
-                  ),
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Inter',
+                    ),
                   ),
                   Text('see more',
                     style: TextStyle(
@@ -187,17 +205,17 @@ class MyHomePage extends StatelessWidget {
               ),
               const SizedBox(height: 15.0,),
               Container(
-                height: 200,
-                width: 500,
+                height: size.height * 0.3, // 30% of screen height
+                width: size.width * 0.9, // 90% of screen width
                 decoration: const BoxDecoration(
                   color: CupertinoColors.systemGrey5,
                 ),
                 child: ListView(
                   padding: const EdgeInsets.all(16.0),
                   children: [
-                    _buildTransactionItem(Icons.arrow_downward, 'Account Deposit', '2024-02-01 10:30 AM', 'View Receipt','\$500.00', Colors.green, ),
-                    _buildTransactionItem(Icons.arrow_upward, 'Payment', '2024-02-02 03:45 PM', 'View Receipt','\$200.00', Colors.red ,),
-                    _buildTransactionItem(Icons.arrow_upward, 'Payment', '2024-02-02 03:45 PM', 'View Receipt','\$200.00', Colors.red ,),
+                    _buildTransactionItem(Icons.arrow_downward, 'Account Deposit', '2024-02-01 10:30 AM', 'View Receipt','\₦500.00', Colors.green, ),
+                    _buildTransactionItem(Icons.arrow_upward, 'Payment', '2024-02-02 03:45 PM', 'View Receipt','\₦200.00', Colors.red ,),
+                    _buildTransactionItem(Icons.arrow_upward, 'Payment', '2024-02-02 03:45 PM', 'View Receipt','\₦10,000.00', Colors.red ,),
                     // Add more transactions as needed
                   ],
                 ),

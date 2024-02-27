@@ -4,6 +4,7 @@ import 'package:primus_suites/common/widgets/textstyles.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../common/widgets/colors.dart';
+import 'dashboard.dart';
 
 class ReceiveMoney extends StatelessWidget {
   const ReceiveMoney({super.key});
@@ -12,17 +13,22 @@ class ReceiveMoney extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding:  const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(
                 height: 40.0,
               ),
-              const Row(
+               Row(
                 children: [
-                  Icon(CupertinoIcons.back),
-                  Text('Receive Money', style: TextStyle(
+                  IconButton(onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(
+                            builder: (context) => MyHomePage(username: '',)
+                        ));
+                  }, icon: const Icon(CupertinoIcons.back)),
+                 const  Text('Receive Money', style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 22,
                     fontFamily: 'Inter',
@@ -40,7 +46,7 @@ class ReceiveMoney extends StatelessWidget {
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(AppColors.primaryColor)
                     ),
-                    child: const Text('Savings Account', style: AppText.smallBoldText,),
+                    child: const Text('Savings Account'),
                   ),
                    const SizedBox(width: 10),
                   ElevatedButton(
@@ -51,12 +57,8 @@ class ReceiveMoney extends StatelessWidget {
                       backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
                       side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
                     ),
-                    child: const Text('Current Account', style: TextStyle(
+                    child:  const Text('Current Account', style: TextStyle(
                       color: Colors.black,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: 'Inter',
-
                     ),),
                   ),
                 ],
@@ -65,7 +67,7 @@ class ReceiveMoney extends StatelessWidget {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text('Current Balance', style: AppText.smallBoldText,),
+                  Text('Current Balance', ),
                   Padding(
                     padding: EdgeInsets.only(left: 8.0),
                     child: Text('₦346,000',
@@ -75,83 +77,78 @@ class ReceiveMoney extends StatelessWidget {
                         fontFamily: 'Inter',
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 30,),
               const Text('Scan QR code', style: AppText.mainText,),
-              const SizedBox(height: 10.0,),
-              QrImageView(
-                data: 'account details',
-                version: QrVersions.auto,
-                size: 200.0,
-              ),
+              const SizedBox(height: 20,),
+                  Container(
+                    height: 200,
+                    width: 200,
+                    child: QrImageView(
+                        data: 'Account Number',
+                        version: QrVersions.auto,
+                    ),
+                  ),
               const SizedBox(height: 30,),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 60.0),
-                    child: Text('Account Number:', style: AppText.mainText,),
+                    padding: EdgeInsets.only(left: 80.0),
+                    child: Text('Account Number:', style: TextStyle(
+                    ),),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 60.0),
-                    child: Text('123456780', style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Inter',
-                    ), ),
+                    padding: EdgeInsets.only(right: 80.0),
+                    child: Text('1234567890', style: AppText.smallBoldText,),
                   ),
                 ],
               ),
-              const SizedBox(height: 10.0,),
+              const SizedBox(height: 20,),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 60.0),
-                    child: Text('Tag', style: AppText.mainText,),
+                    padding: EdgeInsets.only(left: 80.0),
+                    child: Text('Tag', style: TextStyle(
+                    ),),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 60.0),
-                    child: Text('@JohnDoe', style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Inter',
-                    ), ),
+                    padding: EdgeInsets.only(right: 80.0),
+                    child: Text('@JohnDoe', style: AppText.smallBoldText,),
                   ),
                 ],
               ),
-              const SizedBox(height: 10.0,),
-              const Row(
+              const SizedBox(height: 20,),
+               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 60.0),
-                    child: Text('Link', style: AppText.mainText,),
+                    padding: EdgeInsets.only(left: 80.0),
+                    child: Text('Link:', style: TextStyle(
+                    ),),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 60.0),
-                    child: Text('Zenith Bank', style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Inter',
-                    ), ),
+                    padding: EdgeInsets.only(right: 80.0),
+                    child: Text('Zenith Bank', style: AppText.smallBoldText,),
                   ),
+
                 ],
               ),
-              SizedBox(height: 50,),
+              const SizedBox(height: 50.0,),
               SizedBox(
-                height: 50,
                 width: double.infinity,
+                height: 50,
                 child: ElevatedButton(onPressed: () {},
-                    // handle button function here
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(AppColors.primaryColor)
+                      backgroundColor: MaterialStateProperty.all(AppColors.primaryColor)
                   ),
-                    child: const Text('Share Details', style: AppText.mainText,),
-                ),
-              )
+                  child: const Text(
+                      'Share Link'
+                  ),),
+              ),
             ],
           ),
         ),

@@ -1,31 +1,41 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:primus_suites/common/widgets/textstyles.dart';
+import 'package:primus_suites/features/Home%20Scree/views/transfer_success.dart';
 
 import '../../../common/widgets/colors.dart';
+import 'dashboard.dart';
 
 class BuyAirtime extends StatelessWidget {
   const BuyAirtime({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 50.0,),
-              Row(
+              const SizedBox(height: 50.0,),
+               Row(
                 children: [
-                  Icon(CupertinoIcons.back),
-                  Text('Buy Airtime',
-                      style: AppText.bigText
-                  ),
+                  IconButton(onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(
+                            builder: (context) => MyHomePage(username: '',)
+                        ));
+                  }, icon: const Icon(CupertinoIcons.back)),
+                  const Text('Buy Airtime',
+                    style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500
+                    ),
+                  )
                 ],
               ),
-
               const SizedBox(height: 16.0,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -37,7 +47,7 @@ class BuyAirtime extends StatelessWidget {
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(AppColors.primaryColor)
                     ),
-                    child: const Text('Savings Account', style: AppText.smallBoldText,),
+                    child: const Text('Savings Account'),
                   ),
                   const SizedBox(width: 10),
                   ElevatedButton(
@@ -48,12 +58,8 @@ class BuyAirtime extends StatelessWidget {
                       backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
                       side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
                     ),
-                    child: const Text('Current Account', style: TextStyle(
+                    child:  const Text('Current Account', style: TextStyle(
                       color: Colors.black,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: 'Inter',
-
                     ),),
                   ),
                 ],
@@ -62,7 +68,7 @@ class BuyAirtime extends StatelessWidget {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text('Current Balance', style: AppText.smallBoldText,),
+                  Text('Available Balance', ),
                   Padding(
                     padding: EdgeInsets.only(left: 8.0),
                     child: Text('₦346,000',
@@ -72,12 +78,13 @@ class BuyAirtime extends StatelessWidget {
                         fontFamily: 'Inter',
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
-              SizedBox(height: 15.0,),
+              const SizedBox(height: 15.0,),
               const Text('Enter Amount', style: AppText.mainText,),
-              const CustomLabeledInput(label: 'Enter Amount', prefixIcon: Icons.house),
+              const SizedBox(height: 10,),
+              const CustomLabeledInput(label: 'Enter Amount', prefixIcon: Icons.numbers,),
               Column(
                 children: [
                   Row(
@@ -137,25 +144,58 @@ class BuyAirtime extends StatelessWidget {
                         ),
                       ),
                     ],
-                  ),
+                  )
                 ],
               ),
               const SizedBox(height: 15.0,),
-              const Text('Enter Phone Number', style: AppText.mainText,),
-              const CustomLabeledInput(label: 'Enter Amount', prefixIcon: Icons.numbers),
-
-              const SizedBox(height: 10.0,),
+              const Text('Enter phone number', style: AppText.mainText,),
+              const SizedBox(height: 5.0,),
+              const CustomLabeledInput(label: 'Enter Phone Number', prefixIcon: Icons.numbers,),
+              const SizedBox(height: 80,),
               SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: ElevatedButton(onPressed: () {},
+                child: ElevatedButton(onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text("Confirm Purchase"),
+                        content: const Text("Are you sure you want to make this purchase?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(
+                                      builder: (context) => TransferSuccessScreen()
+                                  ));
+                            },
+                            child: const Text("Yes", style: TextStyle(
+                              color: Colors.black,
+                            ),),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              // Close the dialog
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("No", style: TextStyle(
+                              color: AppColors.primaryColor,
+                            ),),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(AppColors.primaryColor)
                   ),
                   child: const Text(
-                      'Buy Airtime'
+                      ' Buy airtime'
                   ),),
               ),
+
             ],
           ),
         ),
