@@ -7,6 +7,8 @@ import 'dart:convert';
 import '../../../common/widgets/colors.dart';
 import '../../../common/widgets/textstyles.dart';
 import 'dashboard.dart';
+import 'package:http/http.dart' as http;
+
 
 class SendMoney extends StatefulWidget {
   const SendMoney({Key? key}) : super(key: key);
@@ -16,15 +18,32 @@ class SendMoney extends StatefulWidget {
 }
 
 class _SendMoneyState extends State<SendMoney> {
-  String? _selectedValue;
+  String? _selectedBankCode;
   TextEditingController _amountController = TextEditingController();
+  TextEditingController _destinationAccountController = TextEditingController();
+  TextEditingController _accountNameController = TextEditingController();
+  TextEditingController _accountNumberController = TextEditingController();
   List<Map<String, dynamic>> _banksList = [];
 
   @override
   void initState() {
     super.initState();
     _loadBanks();
+
+
+    _accountNumberController.addListener(() {
+      if (_accountNumberController.text.length == 10 && _selectedBankCode != null) {
+        lookupAccount(context);
+      }
+    });
   }
+
+  @override
+  void dispose() {
+    _accountNumberController.dispose();
+    super.dispose();
+  }
+
 
   Future<void> _loadBanks() async {
     // Load banks JSON file
@@ -218,33 +237,40 @@ class _SendMoneyState extends State<SendMoney> {
                     ],
                   ),
                   Builder(
-                    builder: (context) {
-                      return DropdownButtonFormField(
-                        value: _selectedValue,
-                        onChanged: (newValue) {
-                          setState(() {
-                            _selectedValue = newValue as String?;
-                          });
-                        },
-                        items: _banksList.map((bank) {
-                          return DropdownMenuItem(
-                            value: bank['code'].toString(),
-                            child: Text(bank['name'].toString()),
-                          );
-                        }).toList(),
-                        decoration: const InputDecoration(
-                          prefixIcon: const Icon(Icons.house, color: Colors.black),
-                          border: OutlineInputBorder(),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
+                      builder: (context) {
+                        return DropdownButtonFormField(
+                          value: _selectedBankCode,
+                          onChanged: (newValue) {
+                            setState(() {
+                              _selectedBankCode = newValue as String?;
+                            });
+                          },
+                          items: _banksList.map((bank) {
+                            return DropdownMenuItem(
+                              value: bank['code'].toString(),
+                              child: Text(bank['name'].toString()),
+                            );
+                          }).toList(),
+                          decoration: const InputDecoration(
+                            prefixIcon: const Icon(Icons.house, color: Colors.black),
+                            border: OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
                           ),
-                        ),
-                      );
-                    }
+                        );
+                      }
                   ),
                   const SizedBox(height: 10.0),
                   const Text('Destination Account'),
-                  const CustomLabeledInput(label: 'Enter account number', prefixIcon: Icons.account_circle),
+                  CustomLabeledInput(label: 'Enter account number', prefixIcon: Icons.account_circle, controller: _accountNumberController,),
+                  const SizedBox(height: 8.0,),
+                  Text(_accountNameController.text,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  ),
                   const SizedBox(height: 20.0,),
                   SizedBox(
                     width: screenWidth, // Adjusting width based on screen size
@@ -260,12 +286,7 @@ class _SendMoneyState extends State<SendMoney> {
                               actions: [
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => TransferSuccessScreen(),
-                                      ),
-                                    );
+                                    initiateTransfer(context);
                                   },
                                   child: const Text("Yes", style: TextStyle(color: Colors.black)),
                                 ),
@@ -300,6 +321,122 @@ class _SendMoneyState extends State<SendMoney> {
     setState(() {
       _amountController.text = amount;
     });
+  }
+
+  void lookupAccount(BuildContext context) async {
+    final accountNumber = _accountNumberController.text;
+    final bankCode = _selectedBankCode;
+
+    if (accountNumber.isEmpty || bankCode == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter account number and select a bank')),
+      );
+      return;
+    }
+
+    final url = Uri.parse('http://44.215.210.13:3007/api/v1/transaction/account_lookup?account_number=$accountNumber&bank_code=$bankCode');
+
+    // Create the payload data to log
+    final payload = {
+      "account_number": accountNumber,
+      "bank_code": bankCode,
+    };
+
+    try {
+      final response = await http.get(url);
+
+      // Log the payload
+      debugPrint('Payload: $payload');
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        final status = jsonData['status'];
+        final reason = jsonData['reason'];
+        final accountName = jsonData['account_name'];
+
+
+        setState(() {
+          _accountNameController.text = accountName ?? '';
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Status: $status, Reason: $reason')),
+        );
+      } else {
+        final error = jsonDecode(response.body)['error'];
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to lookup account: $error')),
+        );
+
+
+        debugPrint('Error: $error');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+
+
+      debugPrint('Error: $e');
+    }
+  }
+
+
+  void initiateTransfer(BuildContext context) async {
+    final accountNumber = _accountNumberController.text;
+    final bankCode = _selectedBankCode;
+
+    if (accountNumber.isEmpty || bankCode == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter account number and select a bank')),
+      );
+      return;
+    }
+    final url = Uri.parse('http://44.215.210.13:3007/api/v1/transaction/initiate_transfer_request');
+
+    final payload = {
+      "account_number": accountNumber,
+      "bank_code": bankCode,
+    };
+
+
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        // body: jsonEncode(data),
+      );
+
+      // Log the payload
+      debugPrint('Payload: $payload');
+
+      if (response.statusCode == 200) {
+        // Transaction initiated successfully
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TransferSuccessScreen(),
+          ),
+        );
+      } else {
+        // If the server returns an error
+        final error = jsonDecode(response.body)['error'];
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to initiate transfer: $error')),
+        );
+
+        // Log the error
+        debugPrint('Error: $error');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+      // Log the error
+      debugPrint('Error: $e');
+    }
   }
 }
 
@@ -359,3 +496,4 @@ Widget _circleButton(Color outerColor, String imagePath) {
     ),
   );
 }
+
