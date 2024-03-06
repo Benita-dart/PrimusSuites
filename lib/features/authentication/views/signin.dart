@@ -5,7 +5,9 @@ import 'package:primus_suites/features/Home%20Scree/views/dashboard.dart';
 import 'package:primus_suites/features/authentication/views/signup.dart';
 
 class Signin extends StatelessWidget {
-  const Signin({Key? key});
+  const Signin({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,8 @@ class Signin extends StatelessWidget {
                       }
 
                       // API endpoint
-                      String apiUrl = 'https://44.215.210.13:3007/api/v1/users/login';
+                      String apiUrl =
+                          'https://44.215.210.13:3007/api/v1/users/login';
 
                       try {
                         // Make POST request
@@ -76,7 +79,10 @@ class Signin extends StatelessWidget {
                         if (response.statusCode == 200) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => MyHomePage(username: '',)),
+                            MaterialPageRoute(
+                                builder: (context) => MyHomePage(
+                                      username: '',
+                                    )),
                           );
                         } else {
                           // Handle other status codes (e.g., show error message)
@@ -90,7 +96,7 @@ class Signin extends StatelessWidget {
                     },
                     style: ButtonStyle(
                       backgroundColor:
-                      MaterialStateProperty.all(AppColors.buttonColor),
+                          MaterialStateProperty.all(AppColors.buttonColor),
                     ),
                     child: const Text('Sign In'),
                   ),
@@ -104,15 +110,17 @@ class Signin extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CreateAccountScreen(username: '',),
+                          builder: (context) => CreateAccountScreen(
+                            username: '',
+                          ),
                         ),
                       );
                     },
                     style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all(AppColors.signInButtonColor),
-                      side: MaterialStateProperty.all(
-                          const BorderSide(color: AppColors.signInButtonBorderColor)),
+                      backgroundColor: MaterialStateProperty.all(
+                          AppColors.signInButtonColor),
+                      side: MaterialStateProperty.all(const BorderSide(
+                          color: AppColors.signInButtonBorderColor)),
                     ),
                     child: const Text(
                       'Register',
@@ -132,13 +140,14 @@ class Signin extends StatelessWidget {
 class CustomLabeledInput extends StatelessWidget {
   final String label;
   final String title;
-  final IconData prefixIcon;
+  IconData? prefixIcon;
   final bool obscureText;
 
-  const CustomLabeledInput({
+  CustomLabeledInput({
+    super.key,
     required this.label,
     required this.title,
-    required this.prefixIcon,
+    this.prefixIcon,
     this.obscureText = false,
   });
 
