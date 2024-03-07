@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:primus_suites/common/widgets/colors.dart';
@@ -10,6 +12,8 @@ class Signin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final TextEditingController loginIdController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -31,66 +35,80 @@ class Signin extends StatelessWidget {
                 ),
                 const SizedBox(height: 16.0),
                 CustomLabeledInput(
-                  label: 'Username',
-                  title: 'Username',
+                  label: 'Login ID',
+                  title: 'Login ID',
                   prefixIcon: Icons.person_rounded,
+                  controller: loginIdController,
                 ),
                 CustomLabeledInput(
                   label: 'Password',
                   title: 'Password',
                   prefixIcon: Icons.lock,
                   obscureText: true,
+                  controller: passwordController,
                 ),
                 SizedBox(
                   width: size.width * 0.9,
                   height: 45,
                   child: ElevatedButton(
                     onPressed: () async {
-                      // Get the values of username and password from the TextFormField
-                      final usernameController = TextEditingController();
-                      final passwordController = TextEditingController();
+                      String loginId = loginIdController.text.trim();
+                      String password = passwordController.text.trim();
 
-                      String username = usernameController.text;
-                      String password = passwordController.text;
-
-                      // Make sure username and password are not empty
-                      if (username.isEmpty || password.isEmpty) {
-                        // Show an error message or toast
+                      // Validate input
+                      if (loginId.isEmpty || password.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Please enter login ID and password')),
+                        );
                         return;
                       }
 
                       // API endpoint
-                      String apiUrl = 'https://44.215.210.13:3007/api/v1/users/login';
+                      String apiUrl = 'https://dev-api-gateway.primussuite.com/api/v1/users/pre-login';
 
                       try {
-                        // Make POST request
                         var response = await http.post(
                           Uri.parse(apiUrl),
                           body: {
-                            'username': username,
+                            'loginId': loginId,
                             'password': password,
                           },
                         );
 
                         // Check status code
                         if (response.statusCode == 200) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MyHomePage(username: '',)),
+
+                          var data = json.decode(response.body);
+                          String token = data['token'];
+                          print('Token: $token');
+
+                          Navigator.push(context, 
+                          MaterialPageRoute(builder: (context) => MyHomePage(token: token))
                           );
                         } else {
-                          // Handle other status codes (e.g., show error message)
-                          // You might want to decode the response body for more specific error handling
-                          print('Error: ${response.reasonPhrase}');
+                          String errorMessage = 'Failed to sign in. Please try again.';
+                          if (response.statusCode == 401) {
+                            errorMessage = 'Invalid login ID or password.';
+                          }
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(errorMessage)),
+                          );
+                          // Debug error
+                          print('Signin Error: ${response.reasonPhrase}');
+                          print('Response body: ${response.body}');
                         }
                       } catch (e) {
                         // Handle exceptions
-                        print('Error: $e');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Error: $e')),
+                        );
+                        // Debug error
+                        print('Signin Exception: $e');
                       }
+
                     },
                     style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all(AppColors.buttonColor),
+                      backgroundColor: MaterialStateProperty.all(AppColors.buttonColor),
                     ),
                     child: const Text('Sign In'),
                   ),
@@ -104,15 +122,15 @@ class Signin extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CreateAccountScreen(username: '',),
+                          builder: (context) => CreateAccountScreen(username: ''),
                         ),
                       );
                     },
                     style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all(AppColors.signInButtonColor),
+                      backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
                       side: MaterialStateProperty.all(
-                          const BorderSide(color: AppColors.signInButtonBorderColor)),
+                        const BorderSide(color: AppColors.signInButtonBorderColor),
+                      ),
                     ),
                     child: const Text(
                       'Register',
@@ -134,12 +152,14 @@ class CustomLabeledInput extends StatelessWidget {
   final String title;
   final IconData prefixIcon;
   final bool obscureText;
+  final TextEditingController? controller;
 
   const CustomLabeledInput({
     required this.label,
     required this.title,
     required this.prefixIcon,
     this.obscureText = false,
+    this.controller,
   });
 
   @override
@@ -167,6 +187,7 @@ class CustomLabeledInput extends StatelessWidget {
             ),
           ),
           child: TextFormField(
+            controller: controller,
             decoration: InputDecoration(
               labelText: label,
               prefixIcon: Icon(prefixIcon, color: Colors.black),

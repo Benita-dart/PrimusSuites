@@ -38,7 +38,7 @@ class CreateAccountScreen extends StatelessWidget {
       // User created successfully, you can navigate to the next screen
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MyHomePage(username: '',)),
+        MaterialPageRoute(builder: (context) => MyHomePage(token: '',)),
       );
     } else {
       // If the server returns an error

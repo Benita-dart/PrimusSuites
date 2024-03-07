@@ -74,7 +74,7 @@ class _SendMoneyState extends State<SendMoney> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MyHomePage(username: ''),
+                              builder: (context) => MyHomePage(token: ''),
                             ),
                           );
                         },
@@ -336,7 +336,6 @@ class _SendMoneyState extends State<SendMoney> {
 
     final url = Uri.parse('http://44.215.210.13:3007/api/v1/transaction/account_lookup?account_number=$accountNumber&bank_code=$bankCode');
 
-    // Create the payload data to log
     final payload = {
       "account_number": accountNumber,
       "bank_code": bankCode,
@@ -354,7 +353,6 @@ class _SendMoneyState extends State<SendMoney> {
         final reason = jsonData['reason'];
         final accountName = jsonData['account_name'];
 
-
         setState(() {
           _accountNameController.text = accountName ?? '';
         });
@@ -369,17 +367,17 @@ class _SendMoneyState extends State<SendMoney> {
         );
 
 
-        debugPrint('Error: $error');
+        debugPrint('Full Response: ${response.body}');
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
 
-
       debugPrint('Error: $e');
     }
   }
+
 
 
   void initiateTransfer(BuildContext context) async {
@@ -406,7 +404,7 @@ class _SendMoneyState extends State<SendMoney> {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        // body: jsonEncode(data),
+         body: jsonEncode(payload),
       );
 
       // Log the payload

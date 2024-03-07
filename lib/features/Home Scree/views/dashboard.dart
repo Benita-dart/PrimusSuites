@@ -1,15 +1,69 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:primus_suites/common/widgets/colors.dart';
 import 'package:primus_suites/common/widgets/textstyles.dart';
 import 'package:primus_suites/features/Home%20Scree/views/buyairtime.dart';
 import 'package:primus_suites/features/Home%20Scree/views/receivemoney.dart';
 import 'package:primus_suites/features/Home%20Scree/views/sendmoney.dart';
 
-class MyHomePage extends StatelessWidget {
-  final String username;
+class MyHomePage extends StatefulWidget {
+  final String token;
 
-  MyHomePage({required this.username});
+  MyHomePage({required this.token});
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  late String username = '';
+
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    String apiUrl = 'https://dev-api-gateway.primussuite.com/api/v1/users/profile';
+
+    try {
+      var response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          'Authorization': 'Bearer ${widget.token}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // If the server returns a 200 OK response, parse the JSON
+        var data = json.decode(response.body);
+        var userProfile = data['data'];
+        setState(() {
+          username = '${userProfile['first_name']} ${userProfile['last_name']}';
+
+        });
+      } else {
+        // If the server returns an error response
+        print('Error: ${response.statusCode}');
+        print('Error Body: ${response.body}');
+        setState(() {
+          username = 'Error';
+        });
+      }
+    } catch (e) {
+      // If there's an error with the http request
+      print('Error: $e');
+      setState(() {
+        username = 'Error';
+
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +76,9 @@ class MyHomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 40.0,),
+              const SizedBox(height: 40.0),
               Text(
-                'Hello, $username', // Replace "Username" with the actual username
+                'Hello, $username',
                 style: AppText.mainText,
               ),
               const SizedBox(height: 20),

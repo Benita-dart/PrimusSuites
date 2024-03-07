@@ -25,7 +25,7 @@ class ReceiveMoney extends StatelessWidget {
                   IconButton(onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(
-                            builder: (context) => MyHomePage(username: '',)
+                            builder: (context) => MyHomePage(token: '',)
                         ));
                   }, icon: const Icon(CupertinoIcons.back)),
                  const  Text('Receive Money', style: TextStyle(
