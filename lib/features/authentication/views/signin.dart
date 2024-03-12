@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:primus_suites/API/api_sigin_in.dart';
 import 'package:primus_suites/common/widgets/colors.dart';
 import 'package:primus_suites/features/Home%20Scree/views/dashboard.dart';
 import 'package:primus_suites/features/authentication/views/signup.dart';
 
-class Signin extends StatelessWidget {
+class Signin extends StatefulWidget {
   const Signin({
     super.key,
   });
+
+  @override
+  State<Signin> createState() => _SigninState();
+}
+
+class _SigninState extends State<Signin> {
+  final usernameController = TextEditingController();
+
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +43,13 @@ class Signin extends StatelessWidget {
                 ),
                 const SizedBox(height: 16.0),
                 CustomLabeledInput(
+                  controller: usernameController,
                   label: 'Username',
                   title: 'Username',
                   prefixIcon: Icons.person_rounded,
                 ),
                 CustomLabeledInput(
+                  controller: passwordController,
                   label: 'Password',
                   title: 'Password',
                   prefixIcon: Icons.lock,
@@ -49,50 +61,25 @@ class Signin extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () async {
                       // Get the values of username and password from the TextFormField
-                      final usernameController = TextEditingController();
-                      final passwordController = TextEditingController();
-
-                      String username = usernameController.text;
-                      String password = passwordController.text;
 
                       // Make sure username and password are not empty
-                      if (username.isEmpty || password.isEmpty) {
+                      if (usernameController.text.isEmpty ||
+                          passwordController.text.isEmpty) {
                         // Show an error message or toast
+                        debugPrint('input password or username');
                         return;
                       }
 
                       // API endpoint
-                      String apiUrl =
-                          'https://44.215.210.13:3007/api/v1/users/login';
-
-                      try {
-                        // Make POST request
-                        var response = await http.post(
-                          Uri.parse(apiUrl),
-                          body: {
-                            'username': username,
-                            'password': password,
-                          },
-                        );
-
-                        // Check status code
-                        if (response.statusCode == 200) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MyHomePage(
-                                      username: '',
-                                    )),
-                          );
-                        } else {
-                          // Handle other status codes (e.g., show error message)
-                          // You might want to decode the response body for more specific error handling
-                          print('Error: ${response.reasonPhrase}');
-                        }
-                      } catch (e) {
-                        // Handle exceptions
-                        print('Error: $e');
-                      }
+                      API.signin(
+                          usernameController.text, passwordController.text);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MyHomePage(
+                                  username: usernameController.text,
+                                )),
+                      );
                     },
                     style: ButtonStyle(
                       backgroundColor:
@@ -142,6 +129,7 @@ class CustomLabeledInput extends StatelessWidget {
   final String title;
   IconData? prefixIcon;
   final bool obscureText;
+  TextEditingController? controller;
 
   CustomLabeledInput({
     super.key,
@@ -149,6 +137,7 @@ class CustomLabeledInput extends StatelessWidget {
     required this.title,
     this.prefixIcon,
     this.obscureText = false,
+    this.controller,
   });
 
   @override
@@ -176,6 +165,7 @@ class CustomLabeledInput extends StatelessWidget {
             ),
           ),
           child: TextFormField(
+            controller: controller,
             decoration: InputDecoration(
               labelText: label,
               prefixIcon: Icon(prefixIcon, color: Colors.black),

@@ -12,27 +12,33 @@ class WelcomeScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 80.0,),
+            const SizedBox(
+              height: 80.0,
+            ),
             const Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text('Join millions of people like you on the better side of Banking ',
-              style: TextStyle(
-                color: AppColors.primaryColor,
-                fontWeight: FontWeight.w600,
+              child: Text(
+                'Join millions of people like you on the better side of Banking ',
+                style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.w600,
                     fontSize: 36,
-                fontFamily: 'Inter'
-              ),
+                    fontFamily: 'Inter'),
               ),
             ),
-            const SizedBox(height: 50,),
+            const SizedBox(
+              height: 50,
+            ),
             const Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text('Experience modern day financial technology services like never before',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                fontFamily: 'Inter',
-              ),),
+              child: Text(
+                'Experience modern day financial technology services like never before',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Inter',
+                ),
+              ),
             ),
             const SizedBox(height: 250.0),
             SizedBox(
@@ -45,12 +51,15 @@ class WelcomeScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CreateAccountScreen(username: '',),
+                        builder: (context) => CreateAccountScreen(
+                          username: '',
+                        ),
                       ),
                     );
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(AppColors.buttonColor),
+                    backgroundColor:
+                        MaterialStateProperty.all(AppColors.buttonColor),
                   ),
                   child: const Text('Register'),
                 ),
@@ -72,8 +81,10 @@ class WelcomeScreen extends StatelessWidget {
                     );
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
-                    side: MaterialStateProperty.all(const BorderSide(color: AppColors.signInButtonBorderColor)),
+                    backgroundColor:
+                        MaterialStateProperty.all(AppColors.signInButtonColor),
+                    side: MaterialStateProperty.all(const BorderSide(
+                        color: AppColors.signInButtonBorderColor)),
                   ),
                   child: const Text(
                     'Sign In',
