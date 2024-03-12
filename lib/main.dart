@@ -32,6 +32,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
         ),
-        home: const OTPpage());
+        home: Signin());
   }
 }
