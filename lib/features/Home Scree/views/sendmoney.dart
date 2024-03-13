@@ -20,7 +20,7 @@ class SendMoney extends StatefulWidget {
 class _SendMoneyState extends State<SendMoney> {
   String? _selectedBankCode;
   TextEditingController _amountController = TextEditingController();
-  TextEditingController _destinationAccountController = TextEditingController();
+  // TextEditingController _destinationAccountController = TextEditingController();
   TextEditingController _accountNameController = TextEditingController();
   TextEditingController _accountNumberController = TextEditingController();
   List<Map<String, dynamic>> _banksList = [];
@@ -74,7 +74,7 @@ class _SendMoneyState extends State<SendMoney> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MyHomePage(token: ''),
+                              builder: (context) => Dashboard( token: '', firstName: '' ),
                             ),
                           );
                         },
@@ -334,7 +334,7 @@ class _SendMoneyState extends State<SendMoney> {
       return;
     }
 
-    final url = Uri.parse('http://44.215.210.13:3007/api/v1/transaction/account_lookup?account_number=$accountNumber&bank_code=$bankCode');
+    final url = Uri.parse('https://staging-api-gateway.primussuite.com/api/v1/transaction/account_lookup?account_number=$accountNumber&bank_code=$bankCode');
 
     final payload = {
       "account_number": accountNumber,
@@ -390,7 +390,7 @@ class _SendMoneyState extends State<SendMoney> {
       );
       return;
     }
-    final url = Uri.parse('http://44.215.210.13:3007/api/v1/transaction/initiate_transfer_request');
+    final url = Uri.parse('https://staging-api-gateway.primussuite.com/api/v1/transaction/initiate_transfer_request');
 
     final payload = {
       "account_number": accountNumber,

@@ -15,10 +15,11 @@ class CreateAccountScreen extends StatelessWidget {
 
   final String username;
 
-  CreateAccountScreen({required this.username});
+  CreateAccountScreen({super.key, required this.username});
 
   Future<void> createUser(BuildContext context) async {
-    final url = Uri.parse('http://44.215.210.13:3007/api/v1/users/create');
+    final url = Uri.parse(
+        'https://staging-api-gateway.primussuite.com/api/v1/users/create');
     final response = await http.post(
       url,
       headers: <String, String>{
@@ -38,7 +39,10 @@ class CreateAccountScreen extends StatelessWidget {
       // User created successfully, you can navigate to the next screen
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MyHomePage(token: '',)),
+
+        MaterialPageRoute(builder: (context) => Dashboard( token: '', firstName: '',)),
+
+
       );
     } else {
       // If the server returns an error
@@ -118,7 +122,8 @@ class CreateAccountScreen extends StatelessWidget {
                     createUser(context);
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(AppColors.buttonColor),
+                    backgroundColor:
+                        MaterialStateProperty.all(AppColors.buttonColor),
                   ),
                   child: const Text('Register'),
                 ),
@@ -137,8 +142,10 @@ class CreateAccountScreen extends StatelessWidget {
                     );
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
-                    side: MaterialStateProperty.all(const BorderSide(color: AppColors.signInButtonBorderColor)),
+                    backgroundColor:
+                        MaterialStateProperty.all(AppColors.signInButtonColor),
+                    side: MaterialStateProperty.all(const BorderSide(
+                        color: AppColors.signInButtonBorderColor)),
                   ),
                   child: const Text(
                     'Sign In',
@@ -161,7 +168,8 @@ class CustomLabeledInput extends StatelessWidget {
   final bool obscureText;
   final TextEditingController controller;
 
-  CustomLabeledInput({
+  const CustomLabeledInput({
+    super.key,
     required this.label,
     required this.title,
     required this.prefixIcon,

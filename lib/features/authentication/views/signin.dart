@@ -1,19 +1,25 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:primus_suites/API/api_sigin_in.dart';
 import 'package:primus_suites/common/widgets/colors.dart';
 import 'package:primus_suites/features/Home%20Scree/views/dashboard.dart';
 import 'package:primus_suites/features/authentication/views/signup.dart';
 
-class Signin extends StatelessWidget {
-  const Signin({Key? key});
+class Signin extends StatefulWidget {
+  const Signin({Key? key}) : super(key: key);
+
+  @override
+  State<Signin> createState() => _SigninState();
+}
+
+class _SigninState extends State<Signin> {
+  final loginIdController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final TextEditingController loginIdController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -35,77 +41,60 @@ class Signin extends StatelessWidget {
                 ),
                 const SizedBox(height: 16.0),
                 CustomLabeledInput(
-                  label: 'Login ID',
-                  title: 'Login ID',
-                  prefixIcon: Icons.person_rounded,
                   controller: loginIdController,
+                  label: 'loginId',
+                  title: 'Username',
+                  prefixIcon: Icons.person_rounded,
                 ),
                 CustomLabeledInput(
+                  controller: passwordController,
                   label: 'Password',
                   title: 'Password',
                   prefixIcon: Icons.lock,
                   obscureText: true,
-                  controller: passwordController,
                 ),
                 SizedBox(
                   width: size.width * 0.9,
                   height: 45,
                   child: ElevatedButton(
                     onPressed: () async {
-                      String loginId = loginIdController.text.trim();
-                      String password = passwordController.text.trim();
+                      // Get the values of username and password from the TextFormField
+                      String loginId = loginIdController.text;
+                      String password = passwordController.text;
 
-                      // Validate input
+                      // Make sure username and password are not empty
                       if (loginId.isEmpty || password.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Please enter login ID and password')),
-                        );
+                        // Show an error message or toast
+                        debugPrint('Input password or username');
                         return;
                       }
 
-                      // API endpoint
-                      String apiUrl = 'https://dev-api-gateway.primussuite.com/api/v1/users/pre-login';
+                      // Call the API to sign in
+                      String? token = await API.signin(loginId, password);
+                      if (token == null) {
+                        // Handle sign-in failure, show error message
+                        print('Sign-in failed');
+                      } else {
 
-                      try {
-                        var response = await http.post(
-                          Uri.parse(apiUrl),
-                          body: {
-                            'loginId': loginId,
-                            'password': password,
-                          },
-                        );
+                        Map<String, dynamic> responseData = json.decode(token);
+                        String firstName = responseData['data']['user']['first_name'];
 
-                        // Check status code
-                        if (response.statusCode == 200) {
+                        if (firstName != null) {
+                          // Sign-in successful, navigate to the home page passing token and firstName
 
-                          var data = json.decode(response.body);
-                          String token = data['token'];
-                          print('Token: $token');
-
-                          Navigator.push(context, 
-                          MaterialPageRoute(builder: (context) => MyHomePage(token: token))
+                          print('Sign-in successful. Token: $token');
+                          print(firstName);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Dashboard(
+                                token: token,
+                                firstName: firstName,
+                              ),
+                            ),
                           );
-                        } else {
-                          String errorMessage = 'Failed to sign in. Please try again.';
-                          if (response.statusCode == 401) {
-                            errorMessage = 'Invalid login ID or password.';
-                          }
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(errorMessage)),
-                          );
-                          // Debug error
-                          print('Signin Error: ${response.reasonPhrase}');
-                          print('Response body: ${response.body}');
                         }
-                      } catch (e) {
-                        // Handle exceptions
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Error: $e')),
-                        );
-                        // Debug error
-                        print('Signin Exception: $e');
                       }
-
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(AppColors.buttonColor),
@@ -122,15 +111,17 @@ class Signin extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CreateAccountScreen(username: ''),
+                          builder: (context) => CreateAccountScreen(
+                            username: '',
+                          ),
                         ),
                       );
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
-                      side: MaterialStateProperty.all(
-                        const BorderSide(color: AppColors.signInButtonBorderColor),
-                      ),
+                      side: MaterialStateProperty.all(const BorderSide(
+                        color: AppColors.signInButtonBorderColor,
+                      )),
                     ),
                     child: const Text(
                       'Register',
@@ -150,17 +141,18 @@ class Signin extends StatelessWidget {
 class CustomLabeledInput extends StatelessWidget {
   final String label;
   final String title;
-  final IconData prefixIcon;
+  final IconData? prefixIcon;
   final bool obscureText;
   final TextEditingController? controller;
 
   const CustomLabeledInput({
+    Key? key,
     required this.label,
     required this.title,
-    required this.prefixIcon,
+    this.prefixIcon,
     this.obscureText = false,
     this.controller,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,69 +1,40 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:primus_suites/common/widgets/colors.dart';
 import 'package:primus_suites/common/widgets/textstyles.dart';
 import 'package:primus_suites/features/Home%20Scree/views/buyairtime.dart';
 import 'package:primus_suites/features/Home%20Scree/views/receivemoney.dart';
 import 'package:primus_suites/features/Home%20Scree/views/sendmoney.dart';
 
-class MyHomePage extends StatefulWidget {
-  final String token;
 
-  MyHomePage({required this.token});
+
+class Dashboard extends StatefulWidget {
+  final String token;
+  final String firstName;
+
+  const Dashboard({Key? key, required this.token, required this.firstName}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<Dashboard> createState() => _DashboardState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  late String username = '';
-
+class _DashboardState extends State<Dashboard> {
+  late String firstName = '';
 
   @override
   void initState() {
     super.initState();
-    fetchUserData();
+    firstName = widget.firstName;
   }
 
-  Future<void> fetchUserData() async {
-    String apiUrl = 'https://dev-api-gateway.primussuite.com/api/v1/users/profile';
-
-    try {
-      var response = await http.get(
-        Uri.parse(apiUrl),
-        headers: {
-          'Authorization': 'Bearer ${widget.token}',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        // If the server returns a 200 OK response, parse the JSON
-        var data = json.decode(response.body);
-        var userProfile = data['data'];
-        setState(() {
-          username = '${userProfile['first_name']} ${userProfile['last_name']}';
-
-        });
-      } else {
-        // If the server returns an error response
-        print('Error: ${response.statusCode}');
-        print('Error Body: ${response.body}');
-        setState(() {
-          username = 'Error';
-        });
-      }
-    } catch (e) {
-      // If there's an error with the http request
-      print('Error: $e');
-      setState(() {
-        username = 'Error';
-
-      });
-    }
-  }
+  // Future<void> _loadUserProfile() async {
+  //   String? first_name = await API.getUserProfile(widget.token);
+  //   if (first_name != null) {
+  //     setState(() {
+  //       this.firstName = first_name;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               const SizedBox(height: 40.0),
               Text(
-                'Hello, $username',
+                'Hello $firstName,',
                 style: AppText.mainText,
               ),
               const SizedBox(height: 20),
@@ -101,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       // Add functionality for Savings Account button
                     },
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(AppColors.primaryColor)
+                      backgroundColor: MaterialStateProperty.all(AppColors.primaryColor),
                     ),
                     child: const Text('Savings Account'),
                   ),
@@ -114,28 +85,31 @@ class _MyHomePageState extends State<MyHomePage> {
                       backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
                       side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
                     ),
-                    child: const Text('Current Account', style: TextStyle(
-                      color: Colors.black,
-                    ),),
+                    child: const Text(
+                      'Current Account',
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 10,),
+              const SizedBox(height: 10),
               Container(
                 height: size.height * 0.2, // 20% of screen height
                 width: size.width * 0.9, // 90% of screen width
                 decoration: BoxDecoration(
-                    color: CupertinoColors.systemGrey5,
-                    borderRadius: BorderRadius.circular(10.0)
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
-                child:  Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Padding(
                       padding: EdgeInsets.all(8.0),
-                      child: Text('Available Balance',
-                        style: TextStyle(fontSize: 10
-                            , fontWeight: FontWeight.w400),
+                      child: Text(
+                        'Available Balance',
+                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
                       ),
                     ),
                     Row(
@@ -145,7 +119,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           padding: EdgeInsets.all(8.0),
                           child: Text(
                             '₦346,000',
-                            style: TextStyle(fontSize: 32,
+                            style: TextStyle(
+                              fontSize: 32,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w600,
                             ),
@@ -153,78 +128,90 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.visibility),
-                          onPressed: () {
-                          },
+                          onPressed: () {},
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10,),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         OutlinedButton(
                           onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(
-                                    builder: (context) => const SendMoney()
-                                ));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SendMoney(),
+                              ),
+                            );
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
                             side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
                           ),
-                          child: const Text('Send Money', style: TextStyle(
-                            color: Colors.black,
-                          ),),
+                          child: const Text(
+                            'Send Money',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(
-                                    builder: (context) => const ReceiveMoney()
-                                ));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ReceiveMoney(),
+                              ),
+                            );
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
                             side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
                           ),
-                          child: const Text('Receive Money', style: TextStyle(
-                              color: Colors.black
-                          ),),
+                          child: const Text(
+                            'Receive Money',
+                            style: TextStyle(color: Colors.black),
+                          ),
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(
-                                    builder: (context) => const BuyAirtime()
-                                ));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const BuyAirtime(),
+                              ),
+                            );
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
                             side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
                           ),
-                          child: const Text('Bill Payment', style: TextStyle(
-                            color: Colors.black,
-                          ),),
+                          child: const Text(
+                            'Bill Payment',
+                            style: TextStyle(color: Colors.black),
+                          ),
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 16.0,),
-              const Text('Quick links', style:TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              )
+              const SizedBox(height: 16.0),
+              const Text(
+                'Quick links',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-              const SizedBox(height:10.0,),
+              const SizedBox(height: 10.0),
               Container(
                 height: size.height * 0.1, // 10% of screen height
                 width: size.width * 0.9, // 90% of screen width
                 decoration: BoxDecoration(
-                    color: CupertinoColors.systemGrey5,
-                    borderRadius: BorderRadius.circular(10.0)
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -237,18 +224,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 20),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Recent Transactions',
+                  Text(
+                    'Recent Transactions',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                       fontFamily: 'Inter',
                     ),
                   ),
-                  Text('see more',
+                  Text(
+                    'see more',
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 10,
@@ -257,19 +246,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 15.0,),
+              const SizedBox(height: 15.0),
               Container(
                 height: size.height * 0.3, // 30% of screen height
                 width: size.width * 0.9, // 90% of screen width
-                decoration: const BoxDecoration(
-                  color: CupertinoColors.systemGrey5,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
                 ),
                 child: ListView(
                   padding: const EdgeInsets.all(16.0),
                   children: [
-                    _buildTransactionItem(Icons.arrow_downward, 'Account Deposit', '2024-02-01 10:30 AM', 'View Receipt','\₦500.00', Colors.green, ),
-                    _buildTransactionItem(Icons.arrow_upward, 'Payment', '2024-02-02 03:45 PM', 'View Receipt','\₦200.00', Colors.red ,),
-                    _buildTransactionItem(Icons.arrow_upward, 'Payment', '2024-02-02 03:45 PM', 'View Receipt','\₦10,000.00', Colors.red ,),
+                    _buildTransactionItem(Icons.arrow_downward, 'Account Deposit', '2024-02-01 10:30 AM',
+                        'View Receipt', '\₦500.00', Colors.green),
+                    _buildTransactionItem(Icons.arrow_upward, 'Payment', '2024-02-02 03:45 PM',
+                        'View Receipt', '\₦200.00', Colors.red),
+                    _buildTransactionItem(Icons.arrow_upward, 'Payment', '2024-02-02 03:45 PM',
+                        'View Receipt', '\₦10,000.00', Colors.red),
                     // Add more transactions as needed
                   ],
                 ),
@@ -313,7 +305,8 @@ Widget _buildCircleButton(Color outerColor, Color innerColor, String label) {
   );
 }
 
-Widget _buildTransactionItem(IconData icon, String title, String timestamp, String type, String amount, Color iconColor) {
+Widget _buildTransactionItem(
+    IconData icon, String title, String timestamp, String type, String amount, Color iconColor) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 8.0),
     child: Row(
@@ -350,7 +343,6 @@ Widget _buildTransactionItem(IconData icon, String title, String timestamp, Stri
             ),
           ],
         ),
-
       ],
     ),
   );
