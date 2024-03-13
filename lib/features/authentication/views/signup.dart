@@ -40,13 +40,13 @@ class CreateAccountScreen extends StatelessWidget {
       Navigator.push(
         context,
 
-        MaterialPageRoute(builder: (context) => Dashboard( token: '', firstName: '',)),
+        MaterialPageRoute(builder: (context) => Dashboard(firstName: '',)),
 
 
       );
     } else {
       // If the server returns an error
-      throw Exception('Failed to create user');
+      throw Exception('Failed to create user_data.dart');
     }
   }
 

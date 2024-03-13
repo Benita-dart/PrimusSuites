@@ -6,6 +6,8 @@ import 'package:primus_suites/common/widgets/colors.dart';
 import 'package:primus_suites/features/Home%20Scree/views/dashboard.dart';
 import 'package:primus_suites/features/authentication/views/signup.dart';
 
+import '../models/user_data.dart';
+
 class Signin extends StatefulWidget {
   const Signin({Key? key}) : super(key: key);
 
@@ -14,9 +16,36 @@ class Signin extends StatefulWidget {
 }
 
 class _SigninState extends State<Signin> {
+  final API api = API();
+
   final loginIdController = TextEditingController();
   final passwordController = TextEditingController();
 
+  void _signin() async {
+    final String loginId = loginIdController.text;
+    final String password = passwordController.text;
+
+    try {
+      bool success = await api.signin(loginId, password);
+      if (success) {
+        String firstName = api.loginData.data.user.firstName;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Dashboard(firstName: firstName),
+          ),
+        );
+      } else {
+        print('Login failed');
+        if (api.loginData.message != null && api.loginData.message.isNotEmpty) {
+          print('Server error: ${api.loginData.message}');
+        }
+      }
+    } catch (e) {
+      print('Error: $e');
+      print('Login error: ${e.toString()}');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -57,44 +86,8 @@ class _SigninState extends State<Signin> {
                   width: size.width * 0.9,
                   height: 45,
                   child: ElevatedButton(
-                    onPressed: () async {
-                      // Get the values of username and password from the TextFormField
-                      String loginId = loginIdController.text;
-                      String password = passwordController.text;
-
-                      // Make sure username and password are not empty
-                      if (loginId.isEmpty || password.isEmpty) {
-                        // Show an error message or toast
-                        debugPrint('Input password or username');
-                        return;
-                      }
-
-                      // Call the API to sign in
-                      String? token = await API.signin(loginId, password);
-                      if (token == null) {
-                        // Handle sign-in failure, show error message
-                        print('Sign-in failed');
-                      } else {
-
-                        Map<String, dynamic> responseData = json.decode(token);
-                        String firstName = responseData['data']['user']['first_name'];
-
-                        if (firstName != null) {
-                          // Sign-in successful, navigate to the home page passing token and firstName
-
-                          print('Sign-in successful. Token: $token');
-                          print(firstName);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Dashboard(
-                                token: token,
-                                firstName: firstName,
-                              ),
-                            ),
-                          );
-                        }
-                      }
+                    onPressed: ()  {
+                      _signin();
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(AppColors.buttonColor),

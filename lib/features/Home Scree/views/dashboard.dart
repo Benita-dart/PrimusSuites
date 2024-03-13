@@ -9,10 +9,10 @@ import 'package:primus_suites/features/Home%20Scree/views/sendmoney.dart';
 
 
 class Dashboard extends StatefulWidget {
-  final String token;
+
   final String firstName;
 
-  const Dashboard({Key? key, required this.token, required this.firstName}) : super(key: key);
+  const Dashboard({Key? key, required this.firstName}) : super(key: key);
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -141,7 +141,7 @@ class _DashboardState extends State<Dashboard> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const SendMoney(),
+                                builder: (context) =>  SendMoney(),
                               ),
                             );
                           },

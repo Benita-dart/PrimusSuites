@@ -57,7 +57,7 @@ class TransferSuccessScreen extends StatelessWidget {
                   onPressed: () {
                   Navigator.push(context,
                        MaterialPageRoute(
-                           builder: (context) => Dashboard( token: '' , firstName: '',)
+                           builder: (context) => Dashboard( firstName: '',)
                        ));
                   },
                   style: ButtonStyle(

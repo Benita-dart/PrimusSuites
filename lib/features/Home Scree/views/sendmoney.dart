@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:primus_suites/features/Home%20Scree/views/transfer_success.dart';
 import 'dart:convert';
 
+import '../../../API/api_sigin_in.dart';
 import '../../../common/widgets/colors.dart';
 import '../../../common/widgets/textstyles.dart';
 import 'dashboard.dart';
@@ -11,13 +12,18 @@ import 'package:http/http.dart' as http;
 
 
 class SendMoney extends StatefulWidget {
-  const SendMoney({Key? key}) : super(key: key);
+
+
+
+   SendMoney({Key? key, }) : super(key: key);
 
   @override
   State<SendMoney> createState() => _SendMoneyState();
 }
 
 class _SendMoneyState extends State<SendMoney> {
+  final API api = API();
+  late String accountId;
   String? _selectedBankCode;
   TextEditingController _amountController = TextEditingController();
   // TextEditingController _destinationAccountController = TextEditingController();
@@ -29,13 +35,33 @@ class _SendMoneyState extends State<SendMoney> {
   void initState() {
     super.initState();
     _loadBanks();
+    _loadAccountData();
 
 
     _accountNumberController.addListener(() {
       if (_accountNumberController.text.length == 10 && _selectedBankCode != null) {
-        lookupAccount(context);
+        _loadAccountData();
       }
     });
+  }
+
+  Future<void> _loadAccountData() async {
+    final accountNumber = _accountNumberController.text;
+    final bankCode = _selectedBankCode;
+
+    try {
+      final accountLookupResult = await api.accountLookup(accountNumber, bankCode);
+      print('Account Lookup Successful!');
+      print('Account Name: ${accountLookupResult.data.name}');
+
+      // You can set the state with the retrieved data and update the UI
+      setState(() {
+        _accountNameController.text = accountLookupResult.data.name ?? '';
+      });
+    } catch (e) {
+      print('Error during account lookup: $e');
+      // Handle errors or display an error message to the user
+    }
   }
 
   @override
@@ -74,7 +100,7 @@ class _SendMoneyState extends State<SendMoney> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Dashboard( token: '', firstName: '' ),
+                              builder: (context) => Dashboard(  firstName: '' ),
                             ),
                           );
                         },
@@ -263,7 +289,7 @@ class _SendMoneyState extends State<SendMoney> {
                   ),
                   const SizedBox(height: 10.0),
                   const Text('Destination Account'),
-                  CustomLabeledInput(label: 'Enter account number', prefixIcon: Icons.account_circle, controller: _accountNumberController,),
+                  CustomLabeledInput(label: 'Enter account_lookup.dart number', prefixIcon: Icons.account_circle, controller: _accountNumberController,),
                   const SizedBox(height: 8.0,),
                   Text(_accountNameController.text,
                   style: const TextStyle(
@@ -323,60 +349,67 @@ class _SendMoneyState extends State<SendMoney> {
     });
   }
 
-  void lookupAccount(BuildContext context) async {
-    final accountNumber = _accountNumberController.text;
-    final bankCode = _selectedBankCode;
-
-    if (accountNumber.isEmpty || bankCode == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter account number and select a bank')),
-      );
-      return;
-    }
-
-    final url = Uri.parse('https://staging-api-gateway.primussuite.com/api/v1/transaction/account_lookup?account_number=$accountNumber&bank_code=$bankCode');
-
-    final payload = {
-      "account_number": accountNumber,
-      "bank_code": bankCode,
-    };
-
-    try {
-      final response = await http.get(url);
-
-      // Log the payload
-      debugPrint('Payload: $payload');
-
-      if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-        final status = jsonData['status'];
-        final reason = jsonData['reason'];
-        final accountName = jsonData['account_name'];
-
-        setState(() {
-          _accountNameController.text = accountName ?? '';
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Status: $status, Reason: $reason')),
-        );
-      } else {
-        final error = jsonDecode(response.body)['error'];
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to lookup account: $error')),
-        );
-
-
-        debugPrint('Full Response: ${response.body}');
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-
-      debugPrint('Error: $e');
-    }
-  }
+  // void lookupAccount(BuildContext context) async {
+  //   final accountNumber = _accountNumberController.text;
+  //   final bankCode = _selectedBankCode;
+  //
+  //   if (accountNumber.isEmpty || bankCode == null) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Please enter account_lookup.dart number and select a bank')),
+  //     );
+  //     return;
+  //   }
+  //
+  //   final url = Uri.parse('https://staging-api-gateway.primussuite.com/api/v1/transaction/account_lookup?account_number=$accountNumber&bank_code=$bankCode');
+  //
+  //   final payload = {
+  //     "account_number": accountNumber,
+  //     "bank_code": bankCode,
+  //   };
+  //
+  //   try {
+  //     final response = await http.get(url,
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json; charset=UTF-8',
+  //         'Authorization': 'Bearer ', // Add the token to the headers
+  //       },
+  //
+  //
+  //     );
+  //
+  //     // Log the payload
+  //     debugPrint('Payload: $payload');
+  //
+  //     if (response.statusCode == 200) {
+  //       final jsonData = jsonDecode(response.body);
+  //       final status = jsonData['status'];
+  //       final reason = jsonData['reason'];
+  //       final accountName = jsonData['account_name'];
+  //
+  //       setState(() {
+  //         _accountNameController.text = accountName ?? '';
+  //       });
+  //
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Status: $status, Reason: $reason')),
+  //       );
+  //     } else {
+  //       final error = jsonDecode(response.body)['error'];
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Failed to lookup account_lookup.dart: $error')),
+  //       );
+  //
+  //
+  //       debugPrint('Full Response: ${response.body}');
+  //     }
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Error: $e')),
+  //     );
+  //
+  //     debugPrint('Error: $e');
+  //   }
+  // }
 
 
 
@@ -386,7 +419,7 @@ class _SendMoneyState extends State<SendMoney> {
 
     if (accountNumber.isEmpty || bankCode == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter account number and select a bank')),
+        SnackBar(content: Text('Please enter account_lookup.dart number and select a bank')),
       );
       return;
     }
