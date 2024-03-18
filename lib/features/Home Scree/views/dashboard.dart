@@ -136,60 +136,67 @@ class _DashboardState extends State<Dashboard> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        OutlinedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>  SendMoney(),
+                        Flexible(
+                          child: OutlinedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>  SendMoney(),
+                                ),
+                              );
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
+                              side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
+                            ),
+                            child: const Text(
+                              'Send Money',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
                               ),
-                            );
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
-                            side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
-                          ),
-                          child: const Text(
-                            'Send Money',
-                            style: TextStyle(
-                              color: Colors.black,
                             ),
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ReceiveMoney(),
-                              ),
-                            );
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
-                            side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
-                          ),
-                          child: const Text(
-                            'Receive Money',
-                            style: TextStyle(color: Colors.black),
+                        Flexible(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ReceiveMoney(),
+                                ),
+                              );
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
+                              side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
+                            ),
+                            child: const Text(
+                              'Receive Money',
+                              style: TextStyle(color: Colors.black, fontSize: 12),
+                            ),
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const BuyAirtime(),
-                              ),
-                            );
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
-                            side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
-                          ),
-                          child: const Text(
-                            'Bill Payment',
-                            style: TextStyle(color: Colors.black),
+                        Flexible(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const BuyAirtime(),
+                                ),
+                              );
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
+                              side: MaterialStateProperty.all(const BorderSide(color: Colors.black)),
+                            ),
+                            child: const Text(
+                              'Bill Payment',
+                              style: TextStyle(color: Colors.black, fontSize: 12),
+                            ),
                           ),
                         ),
                       ],

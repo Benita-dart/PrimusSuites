@@ -44,13 +44,13 @@ class _SendMoneyState extends State<SendMoney> {
       }
     });
   }
-
   Future<void> _loadAccountData() async {
     final accountNumber = _accountNumberController.text;
     final bankCode = _selectedBankCode;
 
     try {
       final accountLookupResult = await api.accountLookup(accountNumber, bankCode);
+
       print('Account Lookup Successful!');
       print('Account Name: ${accountLookupResult.data.name}');
 
