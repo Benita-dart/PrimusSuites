@@ -1,23 +1,23 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:primus_suites/features/Home%20Scree/models/balance.dart';
+import 'package:primus_suites/features/Home%20Scree/models/transaction_history.model.dart';
+import 'package:primus_suites/features/authentication/token_manager/token_saver.dart';
 
 import '../features/Home Scree/models/account_lookup.dart';
 import '../features/authentication/models/user_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class API {
-
   final String apiUrl = 'https://staging-api-gateway.primussuite.com';
-  String? accessToken;
- late LoginData loginData;
+  late String accessToken;
+  late LoginData loginData;
 
   Future<bool> signin(String loginId, String password) async {
     final response = await http.post(
       Uri.parse('$apiUrl/api/v1/users/pre-login'),
-      body: {
-        'loginId': loginId,
-        'password': password
-      },
+      body: {'loginId': loginId, 'password': password},
     );
 
     if (response.statusCode == 200) {
@@ -29,33 +29,48 @@ class API {
       );
 
       accessToken = loginData.data.authToken;
+      print('before $accessToken');
+      // final SharedPreferences prefs = await SharedPreferences.getInstance();
+      // await prefs.setString('authToken', responseData['data']['auth_token']);
+      // dynamic token = prefs.getString(
+      //   'authToken',
+      // );
+      TokenManager.saveToken(accessToken);
+
+      // print(
+      //     'getString token $token'); //to set authToken from the response and saving it
+      // print('now $accessToken');
+
       return loginData.success;
     } else {
-      throw Exception('Failed to sign in: ${response.statusCode} ${response.body}');
+      throw Exception(
+          'Failed to sign in: ${response.statusCode} ${response.body}');
     }
   }
 
-    Future<http.Response> fetchData(String endpoint) async {
-      if (accessToken != null) {
-        final response = await http.get(
-          Uri.parse('$apiUrl/$endpoint'),
-          headers: {'Authorization': 'Bearer $accessToken'},
-        );
-        if (response.statusCode == 200) {
-          return response;
-        } else {
-          throw Exception('Failed to load data');
-        }
+  Future<http.Response> fetchData(String endpoint) async {
+    if (accessToken != null) {
+      final response = await http.get(
+        Uri.parse('$apiUrl/$endpoint'),
+        headers: {'Authorization': 'Bearer $accessToken'},
+      );
+      if (response.statusCode == 200) {
+        return response;
       } else {
-        // Handle user not authenticated (no access token available)
-        throw Exception('User not authenticated');
+        throw Exception('Failed to load data');
       }
+    } else {
+      // Handle user not authenticated (no access token available)
+      throw Exception('User not authenticated');
     }
+  }
 
-  Future<AccountLookup> accountLookup(String accountNumber, String? bankCode) async {
+  Future<AccountLookup> accountLookup(
+      String accountNumber, String? bankCode) async {
     try {
       final response = await http.get(
-        Uri.parse('$apiUrl/api/v1/transaction/account_lookup?account_number=$accountNumber&bank_code=$bankCode'),
+        Uri.parse(
+            '$apiUrl/api/v1/transaction/account_lookup?account_number=$accountNumber&bank_code=$bankCode'),
         headers: {'Authorization': 'Bearer $accessToken'},
       );
 
@@ -70,34 +85,61 @@ class API {
     }
   }
 
+  Future<BalanceData> fetchBalance() async {
+    final accessToken = await TokenManager.getToken();
+    print('now $accessToken');
+    try {
+      final response = await http.get(
+        Uri.parse('$apiUrl/api/v1/accounts/balance'),
+        headers: {'Authorization': 'Bearer $accessToken'},
+      );
+
+      if (response.statusCode == 200) {
+        // If the server did return a 200 OK response,
+        // then parse the JSON.
+        final responseData = json.decode(response.body);
+
+        return BalanceData.fromJson(responseData["data"]); // _balanceData;
+      } else {
+        print('Error: ${response.reasonPhrase}');
+        throw Exception('Failed to load balance');
+      }
+    } catch (e) {
+      // Handle exceptions
+      print('Error: $e');
+      throw Exception('Failed to load  balance $e');
+    }
   }
 
-  // static Future<String?> signin(String loginId, String password) async {
-  //   String apiUrl =
-  //       'https://staging-api-gateway.primussuite.com/api/v1/users/pre-login';
-  //
-  //   try {
-  //     // Make POST request
-  //     var response = await http.post(
-  //       Uri.parse(apiUrl),
-  //       body: {
-  //         'loginId': loginId,
-  //         'password': password,
-  //       },
-  //     );
-  //
-  //     // Check status code
-  //     if (response.statusCode == 200) {
-  //       return response.body;
-  //     } else {
-  //       // Handle other status codes (e.g., show error message)
-  //       print('Error: ${response.reasonPhrase}');
-  //       return null;
-  //     }
-  //   } catch (e) {
-  //     // Handle exceptions
-  //     print('Error: $e');
-  //     return null;
-  //   }
-  // }
+  List<Message> transHistory = [];
 
+  Future<Message> fetchTransactionHistory() async {
+    final accessToken = await TokenManager.getToken();
+    print('transaction token nowin $accessToken');
+    try {
+      final response = await http.get(
+        Uri.parse(
+            '$apiUrl/api/v1/transaction/fund_transfer_history/00510011011003213?fromDate=2024-01-01&toDate=2024-03-13'),
+        headers: {'Authorization': 'Bearer $accessToken'},
+      );
+
+      if (response.statusCode == 200) {
+        print(response.body);
+        dynamic responseData = jsonDecode(response.body);
+        for (var transaction in responseData['data']) {
+          print('transaction item: $transaction');
+        }
+        print(responseData['amount']);
+        return Message.fromJson(responseData['data']);
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to load trancaction history');
+      }
+    } catch (e) {
+      // Handle exceptions
+      print('Error: $e');
+      throw Exception('Failed to load  history ');
+    }
+  }
+}
