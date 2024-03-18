@@ -22,8 +22,8 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   late String firstName = '';
   API api = API();
-  BalanceData? balance;
-  Message? transactionData;
+  BalanceData? balance = BalanceData(availableBalance: "0");
+  List<Message>? transactionData = [];
 
   Future<void> fetchBalanceInUI() async {
     balance = await api.fetchBalance();
@@ -31,25 +31,11 @@ class _DashboardState extends State<Dashboard> {
     setState(() {});
   }
 
-  // Future<void> fetchTransactionHistoryInUI() async {
-  //   history = await api.fetchTransactionData();
-  //   print('Transaction history = ${history?.amount}');
-  //   setState(() {});
-
-  // }
   Future<void> fetchTransactionHistoryInUI() async {
-    transactionData = await api.fetchTransactionHistory();
+    transactionData = await api.fetchTransactionData();
 
-    // if (transactionData != null) {
-    //   for (Message message in transactionData) {
-    //     print('Transaction amount: ${message.amount}');
-    //     print('Transaction date: ${message.transactionDate}');
-    //   }
-    // } else {
-    //   print('Failed to fetch transaction history.');
-    // }
     setState(() {});
-    print('Transaction amount = ${transactionData?.amount}');
+    print('Transaction amountin dashboard = $transactionData');
   }
 
   @override
@@ -183,7 +169,7 @@ class _DashboardState extends State<Dashboard> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => SendMoney(),
+                                  builder: (context) => const SendMoney(),
                                 ),
                               );
                             },
@@ -311,33 +297,47 @@ class _DashboardState extends State<Dashboard> {
                   width: size.width * 0.9, // 90% of screen width
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(14.0),
                   ),
                   child: ListView(
                     padding: const EdgeInsets.all(16.0),
-                    children: [
-                      _buildTransactionItem(
-                          Icons.arrow_downward,
-                          'Payment',
-                          '${transactionData?.transactionDateString}',
-                          'View Receipt',
-                          '${transactionData?.amount}',
-                          Colors.green),
-                      _buildTransactionItem(
-                          Icons.arrow_upward,
-                          'Payment',
-                          '2024-02-02 03:45 PM',
-                          'View Receipt',
-                          '₦200.00',
-                          Colors.red),
-                      _buildTransactionItem(
-                          Icons.arrow_upward,
-                          'Payment',
-                          '2024-02-02 03:45 PM',
-                          'View Receipt',
-                          '₦10,000.00',
-                          Colors.red),
-                      // Add more transactions as needed
-                    ],
+                    children: transactionData!
+                        .map((e) => _buildTransactionItem(
+                            e.debit!.isEmpty
+                                ? Icons.arrow_upward
+                                : Icons.arrow_downward,
+                            'Payment',
+                            '${e.transactionDateString}', // '${transactionData?.transactionDateString}',
+                            'View Receipt',
+                            '₦${e.debit!.isEmpty ? e.credit! : e.debit!}', //'${transactionData?.amount}',
+                            e.debit!.isEmpty ? Colors.green : Colors.red))
+                        .toList(),
+
+                    ///children: [
+
+                    // _buildTransactionItem(
+                    //     Icons.arrow_downward,
+                    //     'Payment',
+                    //     '', // '${transactionData?.transactionDateString}',
+                    //     'View Receipt',
+                    //     '', //'${transactionData?.amount}',
+                    //     Colors.green),
+                    // _buildTransactionItem(
+                    //     Icons.arrow_upward,
+                    //     'Payment',
+                    //     '2024-02-02 03:45 PM',
+                    //     'View Receipt',
+                    //     '₦200.00',
+                    //     Colors.red),
+                    // _buildTransactionItem(
+                    //     Icons.arrow_upward,
+                    //     'Payment',
+                    //     '2024-02-02 03:45 PM',
+                    //     'View Receipt',
+                    //     '₦10,000.00',
+                    //     Colors.red),
+                    // Add more transactions as needed
+                    // ],
                   ),
                 ),
               ],
@@ -383,48 +383,52 @@ Widget _buildCircleButton(Color outerColor, Color innerColor, String label) {
 
 Widget _buildTransactionItem(IconData icon, String title, String timestamp,
     String type, String amount, Color iconColor) {
-  return Container(
-    margin: const EdgeInsets.symmetric(vertical: 8.0),
-    child: Row(
-      children: [
-        Icon(icon, color: iconColor),
-        const SizedBox(width: 16.0),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+  return Padding(
+    padding: const EdgeInsets.all(12.0),
+    child: Container(
+      child: Row(
+        children: [
+          Icon(icon, color: iconColor),
+          const SizedBox(width: 16.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 5.0),
+                Text(
+                  timestamp,
+                  style: AppText.smallItalicText,
+                ),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
+              const SizedBox(height: 4.0),
               Text(
-                title,
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                amount,
+                style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
               ),
-              const SizedBox(height: 5.0),
               Text(
-                timestamp,
-                style: AppText.smallItalicText,
+                type,
+                style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red),
               ),
             ],
           ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            const SizedBox(height: 4.0),
-            Text(
-              amount,
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
-            ),
-            Text(
-              type,
-              style: const TextStyle(
-                  fontSize: 12, fontWeight: FontWeight.w600, color: Colors.red),
-            ),
-          ],
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }

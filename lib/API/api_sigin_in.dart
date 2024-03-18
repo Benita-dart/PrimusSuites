@@ -111,35 +111,63 @@ class API {
     }
   }
 
-  List<Message> transHistory = [];
-
-  Future<Message> fetchTransactionHistory() async {
+  Future<List<Message>?> fetchTransactionData() async {
+    List<Message> messagesList = [];
     final accessToken = await TokenManager.getToken();
     print('transaction token nowin $accessToken');
-    try {
-      final response = await http.get(
-        Uri.parse(
-            '$apiUrl/api/v1/transaction/fund_transfer_history/00510011011003213?fromDate=2024-01-01&toDate=2024-03-13'),
-        headers: {'Authorization': 'Bearer $accessToken'},
-      );
+    final response = await http.get(
+      Uri.parse(
+          '$apiUrl/api/v1/transaction/fund_transfer_history/00510011011003213?fromDate=2024-01-01&toDate=2024-03-13'),
+      headers: {'Authorization': 'Bearer $accessToken'},
+    );
+    print('DATA FROM THE BACKEND; $response');
 
-      if (response.statusCode == 200) {
-        print(response.body);
-        dynamic responseData = jsonDecode(response.body);
-        for (var transaction in responseData['data']) {
-          print('transaction item: $transaction');
-        }
-        print(responseData['amount']);
-        return Message.fromJson(responseData['data']);
-      } else {
-        // If the server did not return a 200 OK response,
-        // then throw an exception.
-        throw Exception('Failed to load trancaction history');
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonData = json.decode(response.body);
+      final transactionHistoryModal =
+          TransactionHistoryModal.fromJson(jsonData);
+
+      // Accessing transaction date and amount
+      if (transactionHistoryModal.success == true) {
+        final List<Message>? messages = transactionHistoryModal.data?.message;
+        messagesList = messages ?? [];
+        print('messages $messages');
       }
-    } catch (e) {
-      // Handle exceptions
-      print('Error: $e');
-      throw Exception('Failed to load  history ');
+    } else {
+      // Handle error
+      print('Failed to fetch transaction data');
     }
+    return messagesList;
   }
 }
+
+  // Future<Message> fetchTransactionHistory() async {
+  //   final accessToken = await TokenManager.getToken();
+  //   print('transaction token nowin $accessToken');
+  //   try {
+  //     final response = await http.get(
+  //       Uri.parse(
+  //           '$apiUrl/api/v1/transaction/fund_transfer_history/00510011011003213?fromDate=2024-01-01&toDate=2024-03-13'),
+  //       headers: {'Authorization': 'Bearer $accessToken'},
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       print(response.body);
+  //       dynamic responseData = jsonDecode(response.body);
+  //       for (var transaction in responseData['data']) {
+  //         print('transaction item: $transaction');
+  //       }
+  //       print(responseData['amount']);
+  //       return Message.fromJson(responseData['data']);
+  //     } else {
+  //       // If the server did not return a 200 OK response,
+  //       // then throw an exception.
+  //       throw Exception('Failed to load trancaction history');
+  //     }
+  //   } catch (e) {
+  //     // Handle exceptions
+  //     print('Error: $e');
+  //     throw Exception('Failed to load  history ');
+  //   }
+  // }
+
