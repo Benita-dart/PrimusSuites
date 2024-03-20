@@ -1,0 +1,870 @@
+[
+  {
+    "name": "9payment Service Bank",
+    "code": 120001
+  },
+  {
+    "name": "Abbey Mortgage Bank",
+    "code": 70010
+  },
+  {
+    "name": "Above only MFB",
+    "code": 100613
+  },
+  {
+    "name": "Accelerex Network Limited",
+    "code": 90202
+  },
+  {
+    "name": "Access",
+    "code": "044"
+  },
+  {
+    "name": "Adeyemi College MFB",
+    "code": 100283
+  },
+  {
+    "name": "Advans La Fayette",
+    "code": 90155
+  },
+  {
+    "name": "Afekhafe MFB",
+    "code": 100326
+  },
+  {
+    "name": "AG Mortgage Bank",
+    "code": 100028
+  },
+  {
+    "name": "Agosasa MFB",
+    "code": 100541
+  },
+  {
+    "name": "AKU MFB",
+    "code": 90531
+  },
+  {
+    "name": "Al-Barakah MFB",
+    "code": 100547
+  },
+  {
+    "name": "Alekun MFB",
+    "code": 100147
+  },
+  {
+    "name": "Alert MFB",
+    "code": 100671
+  },
+  {
+    "name": "Al-Hayat MFB",
+    "code": 100093
+  },
+  {
+    "name": "Allworkers MFB",
+    "code": 100615
+  },
+  {
+    "name": "Alpha kapital",
+    "code": 100574
+  },
+  {
+    "name": "AMAC MFB",
+    "code": 100262
+  },
+  {
+    "name": "AMML MFB",
+    "code": 100307
+  },
+  {
+    "name": "Apeks MFB",
+    "code": 100020
+  },
+  {
+    "name": "Apple MFB",
+    "code": 100123
+  },
+  {
+    "name": "Arise MFB",
+    "code": 100727
+  },
+  {
+    "name": "ASO Savings",
+    "code": 90001
+  },
+  {
+    "name": "Asset Matrix",
+    "code": 100016
+  },
+  {
+    "name": "Astra Polaris MFB",
+    "code": 100074
+  },
+  {
+    "name": "Auchi MFB",
+    "code": 100042
+  },
+  {
+    "name": "Baines Credit",
+    "code": 100582
+  },
+  {
+    "name": "Balogun Gambari",
+    "code": 100325
+  },
+  {
+    "name": "BcKash",
+    "code": 100554
+  },
+  {
+    "name": "BIPC MFB",
+    "code": 100234
+  },
+  {
+    "name": "Boctrust MFB",
+    "code": 100579
+  },
+  {
+    "name": "Bowen MFB",
+    "code": 100643
+  },
+  {
+    "name": "Brent MFB",
+    "code": 100742
+  },
+  {
+    "name": "Bridgeway MFB",
+    "code": 100614
+  },
+  {
+    "name": "Brighthway MFB",
+    "code": 100118
+  },
+  {
+    "name": "Business Support MFB",
+    "code": 100684
+  },
+  {
+    "name": "Cash Connect MFB",
+    "code": 100312
+  },
+  {
+    "name": "CEMCSMFB",
+    "code": 100656
+  },
+  {
+    "name": "Chikum MFB",
+    "code": 100518
+  },
+  {
+    "name": "Cintrust MFB",
+    "code": 200004
+  },
+  {
+    "name": "CIT MFB",
+    "code": 100125
+  },
+  {
+    "name": "CitiBank",
+    "code": "023"
+  },
+  {
+    "name": "Coastline MFB",
+    "code": 100681
+  },
+  {
+    "name": "Consumer MFB",
+    "code": 100064
+  },
+  {
+    "name": "Coronation Merchant Bank",
+    "code": 50001
+  },
+  {
+    "name": "Covenant MFB",
+    "code": 70006
+  },
+  {
+    "name": "Credit Afrique",
+    "code": 100721
+  },
+  {
+    "name": "Crowdforce",
+    "code": 110017
+  },
+  {
+    "name": "Cyberspace Limited",
+    "code": 110014
+  },
+  {
+    "name": "Davo Dani MFB",
+    "code": 100138
+  },
+  {
+    "name": "DaylightMFB",
+    "code": 100510
+  },
+  {
+    "name": "Eagle Flight",
+    "code": 100051
+  },
+  {
+    "name": "Eco Bank",
+    "code": "050"
+  },
+  {
+    "name": "Edfin MFB",
+    "code": 100570
+  },
+  {
+    "name": "Ekondo MFB",
+    "code": 100505
+  },
+  {
+    "name": "Ek-Reliable MFB",
+    "code": 100119
+  },
+  {
+    "name": "EMERALDS MFB",
+    "code": 100515
+  },
+  {
+    "name": "Ek-Reliable MFB",
+    "code": 100119
+  },
+  {
+    "name": "EMERALDS MFB",
+    "code": 100515
+  },
+  {
+    "name": "Empire Trust MFB",
+    "code": 100487
+  },
+  {
+    "name": "Enterpise",
+    "code": "084"
+  },
+  {
+    "name": "ESAN MFB",
+    "code": 100124
+  },
+  {
+    "name": "ESO-E MFB",
+    "code": 100514
+  },
+  {
+    "name": "eTranzact",
+    "code": 100006
+  },
+  {
+    "name": "Evangel MFB",
+    "code": 100701
+  },
+  {
+    "name": "Evergreen MFB",
+    "code": 100230
+  },
+  {
+    "name": "Eyowo",
+    "code": 501
+  },
+  {
+    "name": "FairMoney MFB",
+    "code": 90551
+  },
+  {
+    "name": "FAST MFB",
+    "code": 100715
+  },
+  {
+    "name": "FBN Mortgages Limted",
+    "code": 90107
+  },
+  {
+    "name": "FBNQUEST Merchant Bank",
+    "code": 60002
+  },
+  {
+    "name": "FCMB",
+    "code": 214
+  },
+  {
+    "name": "FCT MFB",
+    "code": 100115
+  },
+  {
+    "name": "Fedpoy MFB",
+    "code": 100135
+  },
+  {
+    "name": "FedPoly Nekede MFB",
+    "code": 100677
+  },
+  {
+    "name": "FFS MFB",
+    "code": 100116
+  },
+  {
+    "name": "Fidelity",
+    "code": "070"
+  },
+  {
+    "name": "Fina Trust MFB",
+    "code": 100022
+  },
+  {
+    "name": "First Bank",
+    "code": "011"
+  },
+  {
+    "name": "Frst Generation Mortgage Bank",
+    "code": 70014
+  },
+  {
+    "name": "First Multiple",
+    "code": 100085
+  },
+  {
+    "name": "Frst Option MFB",
+    "code": 100259
+  },
+  {
+    "name": "First Royal MFB",
+    "code": 100106
+  },
+  {
+    "name": "Flutterwave Technology",
+    "code": 504
+  },
+  {
+    "name": "Fortis Microfinance Bank",
+    "code": 70002
+  },
+  {
+    "name": "FSDH Merchant Bank",
+    "code": 400001
+  },
+  {
+    "name": "FUD MFB",
+    "code": 100509
+  },
+  {
+    "name": "FullRange MFB",
+    "code": 100682
+  },
+  {
+    "name": "FUTO MFB",
+    "code": 100631
+  },
+  {
+    "name": "Gashua MFB",
+    "code": 100735
+  },
+  {
+    "name": "Gatewey",
+    "code": 100599
+  },
+  {
+    "name": "Globus Bank",
+    "code": 103
+  },
+  {
+    "name": "Glory MFB",
+    "code": 100070
+  },
+  {
+    "name": "GoMoney",
+    "code": 502
+  },
+  {
+    "name": "Good News Microfinance Bank",
+    "code": 90495
+  },
+  {
+    "name": "Gowans MFB",
+    "code": 100608
+  },
+  {
+    "name": "GreenVille MFB",
+    "code": 100279
+  },
+  {
+    "name": "Grooming MFB",
+    "code": 100261
+  },
+  {
+    "name": "GTB",
+    "code": "058"
+  },
+  {
+    "name": "GTI MFB",
+    "code": 100036
+  },
+  {
+    "name": "HackMan MFB",
+    "code": 100658
+  },
+  {
+    "name": "Headway MFB",
+    "code": 100522
+  },
+  {
+    "name": "Heritage",
+    "code": "030"
+  },
+  {
+    "name": "HopePSB",
+    "code": 120002
+  },
+  {
+    "name": "Ibile MFB",
+    "code": 100646
+  },
+  {
+    "name": "Ikenne MFB",
+    "code": 100019
+  },
+  {
+    "name": "Ilisan MFB",
+    "code": 100018
+  },
+  {
+    "name": "Imo State MFB",
+    "code": 100499
+  },
+  {
+    "name": "Infinity MFB",
+    "code": 100690
+  },
+  {
+    "name": "Interland MFB",
+    "code": 100071
+  },
+  {
+    "name": "Interswitch Limited",
+    "code": 110003
+  },
+  {
+    "name": "IRL MFB",
+    "code": 100664
+  },
+  {
+    "name": "Isale Oyo MFB",
+    "code": 100704
+  },
+  {
+    "name": "Jaiz",
+    "code": 301
+  },
+  {
+    "name": "Jubilee Life Mortgage",
+    "code": 510
+  },
+  {
+    "name": "Kadpoly MFB",
+    "code": 100318
+  },
+  {
+    "name": "KCMB MFB",
+    "code": 100008
+  },
+  {
+    "name": "Kontagora MFB",
+    "code": 100306
+  },
+  {
+    "name": "Kuda Bank",
+    "code": 90267
+  },
+  {
+    "name": "Legend MFB",
+    "code": 100026
+  },
+  {
+    "name": "Lovonus MFB",
+    "code": 100024
+  },
+  {
+    "name": "Mainland MFB",
+    "code": 100258
+  },
+  {
+    "name": "Mainstreet",
+    "code": "014"
+  },
+  {
+    "name": "Mainstreet MFB",
+    "code": 100723
+  },
+  {
+    "name": "Malachy MFB",
+    "code": 100605
+  },
+  {
+    "name": "Maritime MFB",
+    "code": 100156
+  },
+  {
+    "name": "Mayfair MFB",
+    "code": 100140
+  },
+  {
+    "name": "Mayfresh Mortgage Bank",
+    "code": 70019
+  },
+  {
+    "name": "Megapraise MFB",
+    "code": 100131
+  },
+  {
+    "name": "Meridian MFB",
+    "code": 100065
+  },
+  {
+    "name": "Microvis MFB",
+    "code": 100562
+  },
+  {
+    "name": "Midland MFB",
+    "code": 100317
+  },
+  {
+    "name": "Mint MFB",
+    "code": 100303
+  },
+  {
+    "name": "Money Trust MFB",
+    "code": 100647
+  },
+  {
+    "name": "MONIEPOINT MFB",
+    "code": 90405
+  },
+  {
+    "name": "Mozfin MFB",
+    "code": 100719
+  },
+  {
+    "name": "Mutual Trust",
+    "code": 100581
+  },
+  {
+    "name": "New Golden Pasture",
+    "code": 100571
+  },
+  {
+    "name": "Nigeria Police Force",
+    "code": 509
+  },
+  {
+    "name": "Nigerian Navy MFB",
+    "code": 100513
+  },
+  {
+    "name": "NIP Virtual Bank",
+    "code": 999999
+  },
+  {
+    "name": "Nova Merchant Bank",
+    "code": 60003
+  },
+  {
+    "name": "Nuture MFB",
+    "code": 100359
+  },
+  {
+    "name": "Oche MFb",
+    "code": 226
+  },
+  {
+    "name": "Okpoga MFE",
+    "code": 100653
+  },
+  {
+    "name": "Olowolagba MFE",
+    "code": 100327
+  },
+  {
+    "name": "Omiye MFB",
+    "code": 100640
+  },
+  {
+    "name": "Omoluabi Savings",
+    "code": 70007
+  },
+  {
+    "name": "OneFinance",
+    "code": "026"
+  },
+  {
+    "name": "OOU MFB",
+    "code": 100080
+  },
+  {
+    "name": "OPay",
+    "code": 503
+  },
+  {
+    "name": "Oscotech MFB",
+    "code": 100031
+  },
+  {
+    "name": "Paga",
+    "code": 100002
+  },
+  {
+    "name": "Page Financials",
+    "code": 70008
+  },
+  {
+    "name": "Paga",
+    "code": 100002
+  },
+  {
+    "name": "Page Finandials",
+    "code": 70008
+  },
+  {
+    "name": "PalmPay",
+    "code": 500
+  },
+  {
+    "name": "Parallex Bank",
+    "code": 508
+  },
+  {
+    "name": "Parkway-ReadyCash",
+    "code": 100003
+  },
+  {
+    "name": "PayAttitude Online",
+    "code": 110001
+  },
+  {
+    "name": "Paystack Payment Limited",
+    "code": 110006
+  },
+  {
+    "name": "Pecan Trust MFB",
+    "code": 100590
+  },
+  {
+    "name": "Pennywise MFB",
+    "code": 100144
+  },
+  {
+    "name": "Personal Trust MFB",
+    "code": 100550
+  },
+  {
+    "name": "Petra MFB",
+    "code": 100517
+  },
+  {
+    "name": "Pillar MFB",
+    "code": 100645
+  },
+  {
+    "name": "Platinum Mortgage Bank",
+    "code": 70013
+  },
+  {
+    "name": "PolarisBank",
+    "code": "076"
+  },
+  {
+    "name": "Prestige MFB",
+    "code": 100716
+  },
+  {
+    "name": "Providus",
+    "code": 101
+  },
+  {
+    "name": "PurpleMoney MFB",
+    "code": 100538
+  },
+  {
+    "name": "Quickfund MFB",
+    "code": 100233
+  },
+  {
+    "name": "Rand Bank",
+    "code": "024"
+  },
+  {
+    "name": "Refuge Mortgage",
+    "code": 100056
+  },
+  {
+    "name": "Regent MFB",
+    "code": 100548
+  },
+  {
+    "name": "Reliance MFB",
+    "code": 100577
+  },
+  {
+    "name": "RenMoney Microfinance Bank",
+    "code": 90198
+  },
+  {
+    "name": "Rephidim MFB",
+    "code": 100058
+  },
+  {
+    "name": "Richway MFB",
+    "code": 100637
+  },
+  {
+    "name": "Royal Exchange MFB",
+    "code": 100546
+  },
+  {
+    "name": "Rubies MFB",
+    "code": 90175
+  },
+  {
+    "name": "Safe Haven MFB",
+    "code": 100739
+  },
+  {
+    "name": "SafeTrust",
+    "code": 90006
+  },
+  {
+    "name": "Sagamu MFB",
+    "code": 100005
+  },
+  {
+    "name": "SeedCapital MFB",
+    "code": 100486
+  },
+  {
+    "name": "Shepherd Trust MFB",
+    "code": 100021
+  },
+  {
+    "name": "Sparkde Bank",
+    "code": 505
+  },
+  {
+    "name": "Spectrum MFB",
+    "code": 507
+  },
+  {
+    "name": "Stanbic IBTC",
+    "code": "039"
+  },
+  {
+    "name": "Standard Chattered",
+    "code": "058"
+  },
+  {
+    "name": "Stanford MFB",
+    "code": 100559
+  },
+  {
+    "name": "Stellas MFB",
+    "code": 200002
+  },
+  {
+    "name": "Sterling",
+    "code": 232
+  },
+  {
+    "name": "Sulspap MFB",
+    "code": 100521
+  },
+  {
+    "name": "Suntrust",
+    "code": 100
+  },
+  {
+    "name": "TAJ Bank",
+    "code": 506
+  },
+  {
+    "name": "Tangerine Money",
+    "code": 100685
+  },
+  {
+    "name": "Teamapt Limited",
+    "code": 110007
+  },
+  {
+    "name": "TF MFB",
+    "code": 100292
+  },
+  {
+    "name": "Thrive MFB Limited",
+    "code": 100490
+  },
+  {
+    "name": "Ttan Trust Bank",
+    "code": 102
+  },
+  {
+    "name": "Trident MFB",
+    "code": 100616
+  },
+  {
+    "name": "TrustBanc MFB",
+    "code": 100134
+  },
+  {
+    "name": "Trustbond Mortgage Bank",
+    "code": 90005
+  },
+  {
+    "name": "UBA",
+    "code": 33
+  },
+  {
+    "name": "UNIBEN MFB",
+    "code": 100728
+  },
+  {
+    "name": "Union",
+    "code": 32
+  },
+  {
+    "name": "Unity",
+    "code": 215
+  },
+  {
+    "name": "Vas2nets Limited",
+    "code": 110015
+  },
+  {
+    "name": "Verite MFB",
+    "code": 90123
+  },
+  {
+    "name": "VFD MFB",
+    "code": 90110
+  },
+  {
+    "name": "Virtue MFB",
+    "code": 100620
+  },
+  {
+    "name": "Visa MFB",
+    "code": 100011
+  },
+  {
+    "name": "Wema",
+    "code": "035"
+  },
+  {
+    "name": "Xslnce",
+    "code": 100591
+  },
+  {
+    "name": "Yobe MFB",
+    "code": 100618
+  },
+  {
+    "name": "Zenith",
+    "code": "057"
+  }
+  ]

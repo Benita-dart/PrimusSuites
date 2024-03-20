@@ -1,33 +1,35 @@
 name: primus_suites
 description: A new Flutter project.
 
-publish_to:
-
+publish_to: ""
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.1.2 <4.0.0'
-
+  sdk: ">=3.1.2 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
+  qr_flutter: ^4.1.0
+  http: ^1.1.0
+  shared_preferences: ^2.2.2
+  flutter_secure_storage: ^9.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-
   flutter_lints: ^2.0.0
 
-
 flutter:
-
-
   uses-material-design: true
+  assets:
+    - assets/images/images-2.png
+    - assets/images/Transfer.png
+    - assets/banks/banks.json
 
   fonts:
     - family: Inter

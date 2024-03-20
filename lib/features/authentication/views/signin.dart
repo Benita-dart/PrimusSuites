@@ -1,76 +1,153 @@
-import 'package:flutter/material.dart';
-import 'package:primus_suites/common/widgets/colors.dart';
+import 'dart:convert';
 
-class Signin extends StatelessWidget {
-  const Signin({super.key});
+import 'package:flutter/material.dart';
+import 'package:primus_suites/API/api_sigin_in.dart';
+import 'package:primus_suites/common/widgets/colors.dart';
+import 'package:primus_suites/features/Home%20Scree/views/dashboard.dart';
+import 'package:primus_suites/features/authentication/views/signup.dart';
+
+import '../models/user_data.dart';
+
+class Signin extends StatefulWidget {
+  const Signin({Key? key}) : super(key: key);
+
+  @override
+  State<Signin> createState() => _SigninState();
+}
+
+class _SigninState extends State<Signin> {
+  final API api = API();
+
+  final loginIdController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool _isLoading = false; // Track loading state
+
+  void _signin() async {
+    setState(() {
+      _isLoading = true; // Show loader
+    });
+
+    final String loginId = loginIdController.text;
+    final String password = passwordController.text;
+
+    try {
+      bool success = await api.signin(loginId, password);
+      if (success) {
+        String firstName = api.loginData.data.user.firstName;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Dashboard(firstName: firstName),
+          ),
+        );
+      } else {
+        print('Login failed');
+        if (api.loginData.message != null && api.loginData.message.isNotEmpty) {
+          print('Server error: ${api.loginData.message}');
+        }
+      }
+    } catch (e) {
+      print('Error: $e');
+      print('Login error: ${e.toString()}');
+    } finally {
+      setState(() {
+        _isLoading = false; // Hide loader
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return Scaffold(
-      body: SingleChildScrollView(
-      child:  Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-           children: [
-             SizedBox(
-               height: 50.0,
-             ),
-             Text('Sign In',
-               style: TextStyle(
-                 fontSize: 24.0,
-                 fontWeight: FontWeight.bold,
-               ),
-             ),
-             SizedBox(height: 16.0),
-             CustomLabeledInput(
-               label: 'Username',
-               title: 'Username',
-               prefixIcon: Icons.person_rounded,
-             ),
-             CustomLabeledInput(
-               label: 'Password',
-               title: 'Password',
-               prefixIcon: Icons.lock,
-               obscureText: true,
-             ),
-             SizedBox(height: 200.0),
-             SizedBox(
-               width: double.infinity,
-               height: 45,
-               child: ElevatedButton(
-                 onPressed: () {
-                   // Handle registration button press
-                   print('Register button pressed');
-                 },
-                 style: ButtonStyle(
-                   backgroundColor: MaterialStateProperty.all(AppColors.buttonColor),
-                 ),
-                 child: const Text('Sign In'),
-               ),
-             ),
-             const SizedBox(height: 8.0),
-             SizedBox(
-               width: double.infinity,
-               height: 45,
-               child: OutlinedButton(
-                 onPressed: () {
-                   // Handle sign-in button press
-                   print('Sign In button pressed');
-                 },
-                 style: ButtonStyle(
-                   backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
-                   side: MaterialStateProperty.all(BorderSide(color: AppColors.signInButtonBorderColor)),
-                 ),
-                 child: const Text(
-                   'Register',
-                   style: TextStyle(color: AppColors.buttonColor),
-                 ),
-               ),
-             ),
-           ],
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 100.0,
+                    ),
+                    const Text(
+                      'Sign In',
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    CustomLabeledInput(
+                      controller: loginIdController,
+                      label: 'loginId',
+                      title: 'Username',
+                      prefixIcon: Icons.person_rounded,
+                    ),
+                    CustomLabeledInput(
+                      controller: passwordController,
+                      label: 'Password',
+                      title: 'Password',
+                      prefixIcon: Icons.lock,
+                      obscureText: true,
+                    ),
+                    SizedBox(
+                      width: size.width * 0.9,
+                      height: 45,
+                      child: ElevatedButton(
+                        onPressed: _isLoading ? null : _signin,
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(AppColors.buttonColor),
+                        ),
+                        child: const Text('Sign In'),
+                      ),
+                    ),
+                    const SizedBox(height: 8.0),
+                    SizedBox(
+                      width: size.width * 0.9,
+                      height: 45,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CreateAccountScreen(
+                                username: '',
+                              ),
+                            ),
+                          );
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(AppColors.signInButtonColor),
+                          side: MaterialStateProperty.all(const BorderSide(
+                            color: AppColors.signInButtonBorderColor,
+                          )),
+                        ),
+                        child: const Text(
+                          'Register',
+                          style: TextStyle(color: AppColors.buttonColor),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-        )
+          // Blur effect widget
+          if (_isLoading)
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.black.withOpacity(0.6), // Adjust opacity for desired blur intensity
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+        ],
       ),
     );
   }
@@ -79,30 +156,36 @@ class Signin extends StatelessWidget {
 class CustomLabeledInput extends StatelessWidget {
   final String label;
   final String title;
-  final IconData prefixIcon;
+  final IconData? prefixIcon;
   final bool obscureText;
+  final TextEditingController? controller;
 
-  CustomLabeledInput({
+  const CustomLabeledInput({
+    Key? key,
     required this.label,
     required this.title,
-    required this.prefixIcon,
+    this.prefixIcon,
     this.obscureText = false,
-  });
+    this.controller,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
         ),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         Container(
+          width: size.width * 0.9,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
             border: Border.all(
@@ -111,6 +194,7 @@ class CustomLabeledInput extends StatelessWidget {
             ),
           ),
           child: TextFormField(
+            controller: controller,
             decoration: InputDecoration(
               labelText: label,
               prefixIcon: Icon(prefixIcon, color: Colors.black),
@@ -119,9 +203,8 @@ class CustomLabeledInput extends StatelessWidget {
             obscureText: obscureText,
           ),
         ),
-        SizedBox(height: 16.0),
+        const SizedBox(height: 16.0),
       ],
     );
   }
 }
-
